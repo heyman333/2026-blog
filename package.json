@@ -1,0 +1,33 @@
+{
+  "name": "2026-blog",
+  "version": "1.0.0",
+  "private": true,
+  "description": "2026-blog",
+  "author": "Yeongsu Han (zero)",
+  "keywords": [
+    "gatsby"
+  ],
+  "scripts": {
+    "develop": "gatsby develop",
+    "start": "gatsby develop",
+    "build": "gatsby build",
+    "serve": "gatsby serve",
+    "clean": "gatsby clean",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "autoprefixer": "^10.5.4",
+    "gatsby": "^5.14.6",
+    "gatsby-plugin-postcss": "^6.16.0",
+    "postcss": "^8.5.25",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.19",
+    "@types/react": "^18.2.55",
+    "@types/react-dom": "^18.2.19",
+    "typescript": "^5.3.3"
+  }
+}
