@@ -51,7 +51,7 @@ const IndexPage: React.FC<IndexPageProps> = ({ data }) => {
 
 export default IndexPage
 
-export const Head: HeadFC = () => <Seo title="Home" pathname="/" />
+export const Head: HeadFC = () => <Seo isHome pathname="/" />
 
 export const query = graphql`
   query IndexPage {

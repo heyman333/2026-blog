@@ -89,6 +89,9 @@ export const Head: HeadFC<Queries.PostQuery> = ({ data }) => (
     title={data.mdx?.frontmatter?.title ?? ``}
     description={data.mdx?.frontmatter?.description ?? data.mdx?.excerpt ?? undefined}
     pathname={`/posts/${data.mdx?.fields?.slug}/`}
+    image={data.mdx?.frontmatter?.banner?.publicURL || undefined}
+    datePublished={data.mdx?.frontmatter?.dateISO ?? undefined}
+    tags={data.mdx?.frontmatter?.tags}
     article
   />
 )
@@ -105,9 +108,11 @@ export const query = graphql`
       frontmatter {
         title
         date(formatString: "YYYY.MM.DD")
+        dateISO: date(formatString: "YYYY-MM-DD")
         tags
         description
         banner {
+          publicURL
           childImageSharp {
             gatsbyImageData(width: 760, aspectRatio: 1.9, placeholder: BLURRED)
           }
