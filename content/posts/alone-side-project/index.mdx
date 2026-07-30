@@ -1,0 +1,159 @@
+---
+title: FE개발자 혼자서 만드는 풀스택 사이드프로젝트
+date: 2023-12-17
+tags:
+  - Side Project
+banner: ./banner.png
+---
+
+올해 my-articles 서비스를 약 두 달 정도 만든 끝에 오픈했었다. (12월 기준으로 서비스를 내렸다ㅠㅠ)
+
+`혼자서 만드는` 이라는 키워드와 함께 뭔가 대단한 개발자가 만든 프로젝트라고 생각하시는 분도 계시겠지만, 현업에서 앱 -> 웹 개발을 해온 천생 프론트엔드 개발자이고 서버개발 경험은 전무했기에 이 글을 보고 많은 개발자 분들이 용기내서 만들어 보고 싶은 프로덕트를 만들어 보셨으면 좋겠다 🙏
+
+## 계기
+
+- 여러 회사를 다니면서 각 회사 블로그에 기술 블로그를 많이 작성했고, 더 이상 운영하지 않은 개인 블로그를 보고서 연락 주시는 분들이 종종 생겼다.
+
+- 아무리 블로그를 잘 만들어도 벨로그나, 브런치, 미디엄보다 이뿌게 만들 자신이 없었다. 감성적인 글은 브런치에, 개발 얘기는 벨로그나 미디엄에 작성하고 싶고 한곳에서 모아서 보여주고 싶었는데, `linktree` 같은 서비스도 있지만 뭔가 벨로그나 미디엄 같이 친숙한 UI로 공유하고 싶었다.
+
+## 디자인은 어떻게?
+
+제일 고민되는 부분이었다. 그렇게 복잡하지 않은 서비스라 디자인이 좋아야 WOW하고 더 오래 머무르고 회원가입 하고 싶을거 같았는데 디자이너가 없기 때문에 `tailwind ui`, `chakra-ui`, `mui`, `bootstrap` 같은 잘 만들어진 시스템을 사용하기로 마음 먹고 빠르게 훑어봤다.
+
+- tailwind ui - tailwind를 기반으로 만들어진 ui 컴포넌트. 개발자가 보기에 디자인은 나무랄데가 없다. 하지만 tailwind를 한번도 사용해보지 않았기 때문에 조금 거부감이 들었고 제공되는 템플릿도 유료버전이 많았다. 확실히 익숙해지면 많이 쓸 수 있는 시스템이라고 생각한다.
+
+- mui - 회사 어드민에 사용하고 있어서 쉽고 빠르게 개발 할 수 있을거 같아서 알아봤는데 느낌이 너무 admin스러웠다. 템플릿을 보면 admin스럽지 않게 이쁘게 만들어진 사이트도 있었지만 필요한 컴포넌트 단위로 템플릿이 제공 되면 좋겠다라는 생각이 들었다. 디자이너 없이 개발자 혼자 만든다면 어드민인거 같으면서 어드민이 아닌 끔찍한 사이트가 나올거 같았다.
+
+- chakra-ui - mui보다 제공되는 컴포넌트는 적어 보였지만 잘 만들어보면 어드민처럼 안보이게 만들 수 있다는 첫인상. 무엇보다 템플릿모음에 Form, Card 같은 원하는 컴포넌트가 잘 모여있었다. (Card만 보고 달려왔다...)
+
+- bootstrap - 사실 진짜 쓸거 없으면 쓰려고 했는데 뭔가 만들다 현타와서 중간에 포기했을거 같다.
+
+고민 끝에 `chakra-ui`를 선택했다.
+
+잘 만들어진 디자인시스템을 사용해보니 나중에 회사에서 디자인시스템을 만들 일이 있다면 좋은 참고 코드가 될 수 있다는 생각이 들었고 개인적으로 React를 개발 하신다면 학습용으로 한번 쯤 써봐야 할 필요가 있지 않을까라는 생각도 들정도였다.
+
+## 서버는 어떻게?
+
+서버 개발을 처음 시도 해본 적이 약 3년전에 `graphql` 공부 한다고 express server 를 npm install 수준으로 띄웠다가 잠깐 보고 내린게 전부였는데
+
+돌아가는 프로덕트를 빨리 보고 싶었기 때문에 최대한 빠르고 쉽게 만들 수 있는 `express` 를 설치하려고 하던 시점에 `koa` 를 발견하고 벨로퍼트님이 작성하신 [koa 개발 가이드 문서](https://backend-intro.vlpt.us/1/) 를 발견했다. 이 문서를 보니 갑자기 원하는 프로덕트를 빠르게 만들 수 있을거같다는 자신감이 생겼다. 밸로퍼트 님은 진짜 짱인거같다👍👍👍👍
+
+서버는 아래 스펙으로 만들었다.
+
+- koa
+- mongodb
+- mongoosejs
+- javascript
+
+벨로퍼트님이 작성해주신 문서에는 mongodbd에서 사용되는 join같은 개념의 [aggregation](https://www.mongodb.com/docs/manual/aggregation/)은 설명 되지 않았기 때문에 복잡한 mongodb 문법은 그때그때 구글링 하면서 만들어 나갔다.
+
+mongodb를 사용하면 보통 mongoosejs 같은 ODM(object document mapping)을 사용하게 되는데 평소 js를 사용하는 개발자가 쉽게 개발 할 수 있을정도로 문법이 그렇게 복잡하지 않고 문서화도 잘 되어있어서 쉽게 원하는 결과를 만들어 나갈 수 있었다. (물론 반나절 이상 삽질하는 경우도 있었지만)
+
+여담이지만 서버개발을 할때는 프론트를 만들때보다 그렇게 손이 많이 가진 않았던거 같다. 물론 간단한 프로젝트라 그랬겠지만 혹시 누군가 나중에 사이드프로젝트를 같이 하자고 한다면, 어렵지 않은 프로젝트라면 무조건 서버한다고 할거다.
+
+## 코딩보다 어려운 AWS
+
+프론트엔드 개발자로써 어색하지 않게 접하는 S3, Cloudfront를 통한 이미지 서빙은 기본적으로 생각하고 있었지만 서버비용, 보안 등을 생각하니 평소에 잘 모르던 개념과 허들이 많았다.
+
+어떻게 서버비용을 조금 덜 낼까 고민하고 주변 서버 개발자분들에게 조언도 구했는데, 그 결과 람다에 서버를 올릴까 잠깐 고민을 했지만 맘편하게 비교적 간단하고 친숙한 ec2에 서버를 올리기로 했다.
+
+아무리 간단하게 서버를 올린다고 하더라도 다음사항은 꼭 고려해야 한다.
+
+- 클라이언트에서 s3에 직접 이미지를 올리는 방법을 선택했고, 무조건적인 버킷에 대한 접근을 막기 위해 presignedUrl 방식을 사용했다. 이 방법을 통해 서버에서 내려주는 upload url에 정해진 시간동안만 이미지를 업로드를 할 수 있게 제한한다.
+- SSL적용과 트래픽 관리를 위해 LB(LoadBalancer)를 적용. 단순하게 API서버로만 쓸 용도였기 때문에 nginx같은 웹서버를 따로 올리지 않았지만 AWS에서 발급하기 위한 SSL인증서를 적용하기 위해서라도 결국 LB는 반드시 붙여 줘야 했다.
+
+혹시 처음 서버개발을 하시고 AWS에 서버를 올리시는 분이라면 위 내용은 한번쯤 시도해 보는것이 좋을것 같다.
+처음 하는 설정이라 삽질을 많이 하긴 했지만 사실 서버개발에서는 기본적인것들이라 presignedurl, aws ssl 인증서 적용 등의 키워드만 검색해도 무수히 많은 블로그와 참고문서들이 검색된다.
+
+하지만 굳이 SSL인증서를 AWS에서 관리하지 않아도 되고 nginx서버를 올려놓은 상태에서 api서버로 서버를 사용하신다면 LB는 옵션이 되지 않을까 싶다.(돈이 많이 나간다....)
+
+또 이미지 리소스가 그렇게 중요하지 않은 프로젝트라면 cloudfront를 안붙여도 될것이다. `각 AWS service가 어떤 기능을 하는지 이해하고 적용하는게 중요!`
+
+## 이제 배포 해보자
+
+나름 MVP라고 생각했던 기능들
+
+- url을 입력하면 메타데이터를 읽어와서 이미지, 타이틀을 보여주는 기능
+  ![image](<https://github.com/heyman333/images/blob/main/image%20(12).png?raw=true>)
+- 내가 작성했던 글과 스크랩하고 싶었던 글을 분리해서 저장하고 조회하는 기능
+  ![image](<https://github.com/heyman333/images/blob/main/image%20(13).png?raw=true>)
+  ![image](<https://github.com/heyman333/images/blob/main/image%20(14).png?raw=true>)
+
+- 소셜로그인(카카오 로그인)
+- DB 테이블과 관련된 모든 CRUD 작업
+- favicon, 미리보기 등에서 사용될 로고와 심볼 만들기
+
+까지 개발을 마치고 배포했다. 로고와 심볼은 [adobe express](https://www.adobe.com/express/create/logo)라는 서비스를 통해 간단하게 만들었다. 디자인을 전혀 모르는 분들도 간간하게 로고를 만들 수 있는 좋은 사이트인거 같다.
+
+## MVP 확장 해보기
+
+1. 글을 카테고리별로 모을 필요가 있어서 폴더구조를 생성하고 아카이빙에 대한 소개를 할 수 있도록 기능을 추가했다.
+   ![image](<https://github.com/heyman333/images/blob/main/image%20(15).png?raw=true>)
+   ![image](<https://github.com/heyman333/images/blob/main/image%20(16).png?raw=true>)
+2. 브라우징 하면서 글을 쉽게 저장 할 수 있도록 [크롬 익스텐션](https://chromewebstore.google.com/u/1/detail/my-articles-extension/lkgjilleboebbhbciicfgeeechkljiki?hl=ko&pli=1)도 만들었다.
+
+크롬 익스텐션을 만드는것도 처음이라 비교적 많은 조사를 통해 개발을 시작했는데, 원래는 서비스와 동일하게 React + Chakra를 SPA으로 만드려고 했다. 하지만 크롬익스텐션을 만드는 예제코드 대부분이 첫 화면을 보여주는 html파일, js파일 로 구성 되어 있어 이걸 React로 어떻게 개발해야하나 감이 잘 안오기도 했고, 만든다 하더라도 무거운 번들사이즈가 걱정되었다.
+
+생각해보니 크롬익스텐션 기능이 크지 않아서 React로 만들 필요도 없어보였다.
+
+간단하게 코드 몇줄을 첨부
+
+```html title='example popup.html'
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="popup.css" />
+    <link rel="stylesheet" type="text/css" href="reset.css" />
+  </head>
+  <body>
+    <section class="container">
+      <h1>My articles extention 📚</h1>
+      <div class="profile_container">
+        <img class="profile" id="profile" />
+        <p class="username" id="username"></p>
+      </div>
+      <p class="currentUrl" id="currentUrl"></p>
+      <div class="buttons">
+        <button id="scrap" class="button">스크랩하기</button>
+        <button id="article" class="button">내글로 저장하기</button>
+      </div>
+      <div class="description" id="description"></div>
+    </section>
+    <script src="popup.js"></script>
+  </body>
+</html>
+```
+
+크롬 익스텐션 에서 실행되는 js에서는 [chrome API](https://developer.chrome.com/docs/extensions/reference?hl=ko)를 사용할 수 있다. API를 통해 원하는 도메인의 쿠키를 얻어올 수 있고, 현재 실행중인 탭의 정보등을 알 수 있다.
+
+```js title='example popup.js'
+// 원하는 도메인에서 쿠키정보 가져오기
+await chrome.cookies.get({
+  name: "accessToken",
+  url: my_article_url,
+});
+
+// 현재 탭의 url 정보 가져오기
+const w = await chrome.windows.getCurrent();
+const tabs = await chrome.tabs.query({ active: true, windowId: w.id });
+
+if (!tabs || !tabs[0]) {
+  description.innerText = "웹사이트의 정보를 가져오지 못했습니다";
+  description.style.color = "#C53030";
+  return;
+}
+
+const url = tabs[0].url;
+```
+
+## 마치며
+
+회사 일만 하면 가끔 다른 기술을 써보며 머리 식힐일이 많은데 非 풀스택 개발자 분들이 재밌는 프로젝트를 많이 만들어 보셨으면 좋겠다.
+
+(다음 프로젝트는 NestJS를 써서 좀 더 완벽한 백엔드를 구현할 예정이다)
+
+> Done is better than perfect

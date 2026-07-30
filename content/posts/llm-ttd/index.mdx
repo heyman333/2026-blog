@@ -1,0 +1,455 @@
+---
+title: 더 이상 TDD는 이상론이 아니다.
+date: 2025-06-22  
+tags:
+  - AI
+---
+
+## TDD가 외면받아온 이유
+
+### 1. 시간과 비용의 부담
+
+TDD(Test-Driven Development)는 테스트를 먼저 작성한 뒤 실제 구현을 하는 방식이다. 이 접근법은 초기 개발 속도를 늦추는 경향이 있으며, 빠른 출시와 반복이 중요한 스타트업 환경에서는 비효율적인 선택으로 여겨졌다.
+
+### 2. 복잡한 비즈니스 로직과 잦은 요구사항 변경
+
+현실의 비즈니스 로직은 단순하지 않다. 예외 케이스가 많고, 요구사항도 빈번하게 변경된다. 이런 환경에서 테스트를 먼저 작성하면 테스트와 구현을 동시에 수정해야 하는 일이 자주 발생하며, 이는 개발자의 부담으로 이어진다.
+
+### 3. 레거시 코드의 존재와 진입 장벽
+
+이미 작성된 레거시 코드는 높은 결합도와 복잡한 의존성을 가지는 경우가 많다. 테스트 코드를 추가하려면 사전에 리팩토링이 필요하며, 이는 경험이 적은 개발자에게는 높은 장벽이 된다.
+
+### 4. 팀 문화와 인식 부족
+
+TDD는 개인 차원의 선택보다는 팀 단위의 공감과 실행이 중요한 개발 방식이다. 그러나 많은 팀은 TDD를 ‘이상적이지만 비현실적인 방식’으로 인식하며 도입을 미뤄왔다.
+
+---
+
+## AI의 등장과 TDD의 현실화
+
+LLM의 등장으로 TDD의 실현 가능성이 비약적으로 높아졌다. GitHub OAuth 인증 기능을 예시로, AI가 테스트 코드 작성을 어떻게 보조하는지 살펴본다.
+
+깃헙 로그인을 위해서 어떤 기능이 필요한지 스펙을 먼저 정할 수 있다.
+
+### 서버
+1. GitHub OAuth 인증 엔드포인트 구현
+   - `/api/auth/github` - GitHub OAuth 인증 시작점
+   - `/api/auth/github/callback` - GitHub 인증 후 콜백 처리
+
+2. 사용자 세션 관리
+   - 인증된 사용자의 세션 생성 및 관리
+   - JWT 토큰 발급 및 검증
+   - 세션 만료 처리
+
+3. GitHub API 연동
+   - 액세스 토큰 발급 및 관리
+   - 사용자 프로필 정보 조회
+   - 필요한 스코프에 대한 권한 요청
+
+4. 데이터베이스 연동
+   - 사용자 정보 저장 및 조회
+   - OAuth 관련 메타데이터 관리
+   - 리프레시 토큰 저장
+
+5. 에러 처리
+   - 인증 실패 시 에러 처리
+   - 토큰 만료 시 재발급 로직
+   - 네트워크 오류 대응
+
+
+## 클라이언트(웹)
+1. 로그인 UI/UX
+   - GitHub 로그인 버튼 구현
+   - 로딩 상태 표시
+   - 에러 메시지 표시
+   - 성공/실패 피드백
+
+2. 인증 상태 관리
+   - 전역 상태에서 로그인 여부 관리
+   - JWT 토큰 저장 및 갱신
+   - 세션 만료 시 자동 로그아웃
+
+3. 보호된 라우트 처리
+   - 인증이 필요한 페이지 접근 제어
+   - 비인증 상태의 리다이렉션
+   - 권한 수준에 따른 컨텐츠 표시
+
+4. API 통신
+   - 인증 요청 처리
+   - 토큰 기반 API 요청 처리
+   - 에러 핸들링 및 재시도 로직
+
+5. 사용자 정보 표시
+   - 프로필 이미지 표시
+   - 사용자 이름 표시
+   - GitHub 계정 연동 상태 표시
+
+6. 로그아웃 처리
+   - 세션 종료
+   - 로컬 스토리지 클리어
+   - 서버 세션 종료 요청
+
+
+이렇게 개발자는 클라이언트와 서버의 스펙을 미리 정할 수 있고 AI를 통해 쉽게 다음처럼 테스트 코드를 작성할 수 있다. (위 스펙대로 테스트 코드를 요청)
+
+
+### 서버
+✅ 1. GitHub OAuth 인증 엔드포인트
+```ts
+// tests/auth/github.test.ts
+import request from 'supertest'
+import app from '../../src/app'
+
+describe('GitHub OAuth 인증 엔드포인트', () => {
+  it('GET /api/auth/github - GitHub 인증 페이지로 리디렉션', async () => {
+    const res = await request(app).get('/api/auth/github')
+    expect(res.status).toBe(302)
+    expect(res.header.location).toMatch(/^https:\/\/github\.com\/login\/oauth\/authorize/)
+  })
+})
+```
+✅ 2. 인증 콜백 처리 + 세션(JWT 발급) 테스트
+```ts
+import jwt from 'jsonwebtoken'
+import request from 'supertest'
+import app from '../../src/app'
+
+jest.mock('../../src/services/github')
+jest.mock('../../src/services/database')
+
+import * as githubService from '../../src/services/github'
+import * as dbService from '../../src/services/database'
+
+describe('GitHub OAuth 콜백 처리', () => {
+  const mockProfile = { id: 1234, login: 'devhan' }
+
+  beforeEach(() => {
+    githubService.exchangeCodeForToken.mockResolvedValue('mock-access-token')
+    githubService.getUserProfile.mockResolvedValue(mockProfile)
+    dbService.findOrCreateUser.mockResolvedValue({ id: 1, ...mockProfile })
+  })
+
+  it('GET /api/auth/github/callback - JWT 발급', async () => {
+    const res = await request(app)
+      .get('/api/auth/github/callback')
+      .query({ code: 'fake-code' })
+
+    expect(res.status).toBe(200)
+    expect(res.body.token).toBeDefined()
+
+    const decoded = jwt.verify(res.body.token, process.env.JWT_SECRET!)
+    expect(decoded).toHaveProperty('id', 1)
+  })
+})
+```
+✅ 3. JWT 검증 및 세션 만료 테스트
+```ts
+import jwt from 'jsonwebtoken'
+
+describe('JWT 토큰 처리', () => {
+  const secret = process.env.JWT_SECRET!
+
+  it('JWT 생성 및 검증', () => {
+    const token = jwt.sign({ id: 1 }, secret, { expiresIn: '1h' })
+    const decoded = jwt.verify(token, secret)
+    expect(decoded).toHaveProperty('id', 1)
+  })
+
+  it('만료된 JWT는 검증 실패', () => {
+    const expiredToken = jwt.sign({ id: 1 }, secret, { expiresIn: '-1s' })
+    expect(() => jwt.verify(expiredToken, secret)).toThrow('jwt expired')
+  })
+})
+```
+✅ 4. GitHub API 연동 Mock 테스트
+```ts
+import * as githubService from '../../src/services/github'
+import nock from 'nock'
+
+describe('GitHub API 연동', () => {
+  it('access token을 받아야 한다', async () => {
+    nock('https://github.com')
+      .post('/login/oauth/access_token')
+      .reply(200, { access_token: 'mock-token' })
+
+    const token = await githubService.exchangeCodeForToken('code')
+    expect(token).toBe('mock-token')
+  })
+
+  it('사용자 프로필을 조회해야 한다', async () => {
+    nock('https://api.github.com')
+      .get('/user')
+      .reply(200, { login: 'devhan' })
+
+    const profile = await githubService.getUserProfile('mock-token')
+    expect(profile.login).toBe('devhan')
+  })
+})
+```
+✅ 5. DB 연동 (findOrCreateUser) 테스트
+```ts
+import * as db from '../../src/services/database'
+
+describe('DB 연동 테스트', () => {
+  it('신규 유저 저장', async () => {
+    db.findUserByGithubId = jest.fn().mockResolvedValue(null)
+    db.createUser = jest.fn().mockResolvedValue({ id: 1, login: 'devhan' })
+
+    const user = await db.findOrCreateUser({ id: 123, login: 'devhan' })
+
+    expect(db.createUser).toHaveBeenCalled()
+    expect(user).toHaveProperty('id', 1)
+  })
+
+  it('기존 유저 반환', async () => {
+    const existingUser = { id: 2, login: 'olduser' }
+    db.findUserByGithubId = jest.fn().mockResolvedValue(existingUser)
+
+    const user = await db.findOrCreateUser({ id: 123, login: 'olduser' })
+
+    expect(db.findUserByGithubId).toHaveBeenCalled()
+    expect(user).toEqual(existingUser)
+  })
+})
+```
+
+✅ 6. 에러 처리 테스트
+```ts
+describe('에러 처리', () => {
+  it('콜백 요청 시 code 없음 → 400', async () => {
+    const res = await request(app).get('/api/auth/github/callback')
+    expect(res.status).toBe(400)
+  })
+
+  it('GitHub API 실패 → 500', async () => {
+    githubService.exchangeCodeForToken.mockRejectedValue(new Error('GitHub error'))
+
+    const res = await request(app)
+      .get('/api/auth/github/callback')
+      .query({ code: 'fail-code' })
+
+    expect(res.status).toBe(500)
+    expect(res.body.error).toBeDefined()
+  })
+})
+```
+
+
+### 클라이언트
+
+✅ 1. 로그인 UI/UX
+```tsx
+import { render, screen, fireEvent } from '@testing-library/react'
+import LoginButton from '../src/components/LoginButton'
+
+describe('Login UI/UX', () => {
+  it('GitHub 로그인 버튼 렌더링', () => {
+    render(<LoginButton />)
+    expect(screen.getByRole('button', { name: /GitHub 로그인/i })).toBeInTheDocument()
+  })
+
+  it('클릭 시 GitHub OAuth 페이지로 이동', () => {
+    delete window.location
+    window.location = { href: '' } as any
+
+    render(<LoginButton />)
+    fireEvent.click(screen.getByRole('button'))
+    expect(window.location.href).toContain('/api/auth/github')
+  })
+
+  it('로딩 상태 표시', () => {
+    render(<LoginButton loading />)
+    expect(screen.getByText(/로그인 중/i)).toBeInTheDocument()
+  })
+
+  it('에러 메시지 표시', () => {
+    render(<LoginButton error="인증 실패" />)
+    expect(screen.getByText(/인증 실패/)).toBeInTheDocument()
+  })
+})
+```
+
+✅ 2. 인증 상태 관리 (쿠키 기반)
+```tsx
+import { renderHook, act } from '@testing-library/react'
+import { AuthProvider, useAuth } from '../src/context/AuthContext'
+
+const setCookie = (name: string, value: string) => {
+  document.cookie = `${name}=${value}; path=/`
+}
+const clearCookie = (name: string) => {
+  document.cookie = `${name}=; Max-Age=0; path=/`
+}
+
+describe('인증 상태 관리', () => {
+  const wrapper = ({ children }: any) => <AuthProvider>{children}</AuthProvider>
+
+  beforeEach(() => {
+    clearCookie('token')
+  })
+
+  it('쿠키에 토큰이 있으면 로그인 상태', () => {
+    setCookie('token', 'jwt-token')
+    const { result } = renderHook(() => useAuth(), { wrapper })
+    expect(result.current.isAuthenticated).toBe(true)
+  })
+
+  it('login() 호출 시 쿠키에 토큰 저장 및 상태 변경', () => {
+    const { result } = renderHook(() => useAuth(), { wrapper })
+
+    act(() => result.current.login('jwt-token'))
+    expect(document.cookie).toContain('token=jwt-token')
+    expect(result.current.isAuthenticated).toBe(true)
+  })
+
+  it('세션 만료 (쿠키 없음) 시 로그아웃 상태', () => {
+    clearCookie('token')
+    const { result } = renderHook(() => useAuth(), { wrapper })
+    expect(result.current.isAuthenticated).toBe(false)
+  })
+})
+```
+✅ 3. 보호된 라우트 처리
+```tsx
+import { render, screen } from '@testing-library/react'
+import { MemoryRouter, Routes, Route } from 'react-router-dom'
+import { AuthProvider } from '../src/context/AuthContext'
+import ProtectedRoute from '../src/routes/ProtectedRoute'
+
+const setCookie = (name: string, value: string) => {
+  document.cookie = `${name}=${value}; path=/`
+}
+const clearCookie = (name: string) => {
+  document.cookie = `${name}=; Max-Age=0; path=/`
+}
+
+describe('보호된 라우트', () => {
+  const SecretPage = () => <div>비밀</div>
+  const LoginPage = () => <div>로그인</div>
+
+  afterEach(() => {
+    clearCookie('token')
+  })
+
+  it('비인증 상태 시 로그인 페이지로 리디렉션', () => {
+    render(
+      <AuthProvider>
+        <MemoryRouter initialEntries={['/secret']}>
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/secret" element={
+              <ProtectedRoute>
+                <SecretPage />
+              </ProtectedRoute>
+            } />
+          </Routes>
+        </MemoryRouter>
+      </AuthProvider>
+    )
+
+    expect(screen.getByText('로그인')).toBeInTheDocument()
+  })
+
+  it('인증 상태 시 보호 페이지 접근', () => {
+    setCookie('token', 'jwt-token')
+
+    render(
+      <AuthProvider>
+        <MemoryRouter initialEntries={['/secret']}>
+          <Routes>
+            <Route path="/secret" element={
+              <ProtectedRoute>
+                <SecretPage />
+              </ProtectedRoute>
+            } />
+          </Routes>
+        </MemoryRouter>
+      </AuthProvider>
+    )
+
+    expect(screen.getByText('비밀')).toBeInTheDocument()
+  })
+})
+```
+✅ 4. API 통신 (fetch + Authorization 헤더)
+```tsx
+import { fetchWithAuth } from '../src/utils/apiClient'
+
+const setCookie = (name: string, value: string) => {
+  document.cookie = `${name}=${value}; path=/`
+}
+
+describe('API 통신', () => {
+  beforeEach(() => {
+    fetchMock.resetMocks()
+  })
+
+  it('Authorization 헤더에 토큰 포함', async () => {
+    setCookie('token', 'jwt-token')
+    fetchMock.mockResponseOnce(JSON.stringify({ ok: true }))
+
+    const res = await fetchWithAuth('/api/test')
+    const lastCall = fetchMock.mock.calls[0][1]
+    expect(lastCall?.headers?.Authorization).toBe('Bearer jwt-token')
+  })
+
+  it('토큰 없을 경우 Authorization 헤더 없음', async () => {
+    document.cookie = 'token=; Max-Age=0; path=/'
+    fetchMock.mockResponseOnce(JSON.stringify({ ok: true }))
+
+    const res = await fetchWithAuth('/api/test')
+    const lastCall = fetchMock.mock.calls[0][1]
+    expect(lastCall?.headers?.Authorization).toBeUndefined()
+  })
+})
+```
+
+✅ 5. 사용자 정보 표시
+```tsx
+import { render, screen } from '@testing-library/react'
+import UserProfile from '../src/components/UserProfile'
+
+describe('사용자 정보 표시', () => {
+  it('사용자 이름과 프로필 이미지 렌더링', () => {
+    render(<UserProfile user={{ name: '한영수', avatarUrl: 'https://example.com/avatar.png' }} />)
+
+    expect(screen.getByText('한영수')).toBeInTheDocument()
+    expect(screen.getByAltText('사용자 아바타')).toHaveAttribute('src', 'https://example.com/avatar.png')
+  })
+})
+```
+✅ 6. 로그아웃 처리
+```tsx
+import { render, fireEvent } from '@testing-library/react'
+import LogoutButton from '../src/components/LogoutButton'
+import { AuthProvider, useAuth } from '../src/context/AuthContext'
+
+const setCookie = (name: string, value: string) => {
+  document.cookie = `${name}=${value}; path=/`
+}
+const clearCookie = (name: string) => {
+  document.cookie = `${name}=; Max-Age=0; path=/`
+}
+
+describe('로그아웃 처리', () => {
+  it('클릭 시 쿠키 삭제 + 상태 false', () => {
+    setCookie('token', 'jwt-token')
+
+    const wrapper = ({ children }: any) => <AuthProvider>{children}</AuthProvider>
+    const { getByRole } = render(<LogoutButton />, { wrapper })
+
+    fireEvent.click(getByRole('button'))
+
+    expect(document.cookie).not.toContain('token=')
+  })
+})
+```
+위의 스펙을 Cursor와 ChatGPT에게 알려주고 테스트코드 작성을 요청했다.
+
+이제 개발자는 생성된 테스트 코드를 기반으로 안정적이고 견고한 서비스를 구현할 수 있다.
+
+TDD는 개발 프로세스를 체계화하고 코드의 품질과 신뢰성을 높여준다. 단순한 테스트 작성을 넘어 설계 방법론으로서의 가치가 있으며, 이는 소프트웨어의 유지보수와 확장을 용이하게 한다.
+
+LLM의 등장으로 TDD는 더 이상 부담스러운 작업이 아니다. 앞서 살펴본 예시처럼 AI가 테스트 코드 작성을 도와주면서, TDD는 자연스러운 개발 문화가 될 수 있다.
+
+이 글을 통해 개발자들이 테스트 코드의 중요성을 다시 한번 생각해보고, TDD를 현대 소프트웨어 개발의 필수 요소로 받아들이길 바란다.

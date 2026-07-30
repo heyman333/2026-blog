@@ -1,49 +1,26 @@
 import * as React from "react"
-import { Link, HeadFC, PageProps } from "gatsby"
-
-const pageStyles = {
-  color: "#232129",
-  padding: "96px",
-  fontFamily: "-apple-system, Roboto, sans-serif, serif",
-}
-const headingStyles = {
-  marginTop: 0,
-  marginBottom: 64,
-  maxWidth: 320,
-}
-
-const paragraphStyles = {
-  marginBottom: 48,
-}
-const codeStyles = {
-  color: "#8A6534",
-  padding: 4,
-  backgroundColor: "#FFF4DB",
-  fontSize: "1.25rem",
-  borderRadius: 4,
-}
+import { Link, type HeadFC, type PageProps } from "gatsby"
+import { Container } from "../components/container"
+import { Seo } from "../components/seo"
 
 const NotFoundPage: React.FC<PageProps> = () => {
   return (
-    <main style={pageStyles}>
-      <h1 style={headingStyles}>Page not found</h1>
-      <p style={paragraphStyles}>
-        Sorry 😔, we couldn’t find what you were looking for.
-        <br />
-        {process.env.NODE_ENV === "development" ? (
-          <>
-            <br />
-            Try creating a page in <code style={codeStyles}>src/pages/</code>.
-            <br />
-          </>
-        ) : null}
-        <br />
-        <Link to="/">Go home</Link>.
+    <Container className="flex flex-col items-center py-24 text-center">
+      <p className="text-body-2 font-bold tabular-nums text-fg-brand">404</p>
+      <h1 className="mt-3 text-display-2 font-bold text-fg-primary">페이지를 찾을 수 없어요</h1>
+      <p className="mt-4 max-w-md text-body-1 text-fg-tertiary">
+        주소가 바뀌었거나 삭제된 페이지일 수 있어요.
       </p>
-    </main>
+      <Link
+        to="/"
+        className="mt-8 inline-flex h-14 items-center rounded-xl bg-blue-500 px-6 text-label-l font-bold text-fg-inverse transition-colors duration-200 hover:bg-blue-600"
+      >
+        홈으로 이동
+      </Link>
+    </Container>
   )
 }
 
 export default NotFoundPage
 
-export const Head: HeadFC = () => <title>Not found</title>
+export const Head: HeadFC = () => <Seo title="404" pathname="/404/" />

@@ -8,20 +8,34 @@
     "gatsby"
   ],
   "scripts": {
-    "develop": "gatsby develop",
-    "start": "gatsby develop",
+    "develop": "gatsby develop -p 4000",
+    "start": "gatsby develop -p 4000",
     "build": "gatsby build",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@mdx-js/react": "^2.3.0",
+    "@tailwindcss/postcss": "^4.3.3",
     "autoprefixer": "^10.5.4",
+    "clsx": "^2.1.1",
     "gatsby": "^5.14.6",
+    "gatsby-plugin-catch-links": "^5.14.0",
+    "gatsby-plugin-feed": "^5.14.0",
+    "gatsby-plugin-image": "^3.14.0",
+    "gatsby-plugin-manifest": "^5.14.0",
+    "gatsby-plugin-mdx": "^5.14.1",
     "gatsby-plugin-postcss": "^6.16.0",
+    "gatsby-plugin-sharp": "^5.14.0",
+    "gatsby-plugin-sitemap": "^6.14.0",
+    "gatsby-source-filesystem": "^5.14.0",
+    "gatsby-transformer-sharp": "^5.14.0",
     "postcss": "^8.5.25",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "rehype-prism-plus": "^1.6.3",
+    "remark-gfm": "^3.0.1",
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
