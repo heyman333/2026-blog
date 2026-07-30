@@ -9,8 +9,9 @@ interface Career {
 }
 
 const CAREER: ReadonlyArray<Career> = [
-  { period: `2025.08 ~`, role: `MonyMony — AI Native Fullstack Engineer` },
-  { period: `2022.01 ~ 2025.07`, role: `Kakaostyle — Frontend Engineer` },
+  { period: `2025.08 ~ 2026.04`, role: `MonyMony — AI Native Fullstack Engineer` },
+  { period: `2022.01 ~ 2025.07`, role: `Kakaostyle — Senior Frontend Engineer` },
+  { period: `2022.11 ~ 2025.12`, role: `Channel Corp — Senior Frontend Engineer` },
   { period: `2021.01 ~ 2021.11`, role: `WantedLab — Frontend Engineer` },
   { period: `2019.01 ~ 2021.01`, role: `Zigbang — Frontend(React-Native) Engineer` },
 ]
