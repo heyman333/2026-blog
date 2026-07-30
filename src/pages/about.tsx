@@ -42,7 +42,7 @@ const AboutPage: React.FC = () => {
     <Container className="max-w-[760px] py-16">
       <h1 className="text-display-2 font-bold text-fg-primary">About</h1>
       <p className="mt-6 text-body-1 text-fg-secondary">
-        안녕하세요, 오픈소스와 사이드 프로젝트를 좋아하는 소프트웨어 엔지니어 Lake예요.
+        안녕하세요, 오픈소스와 사이드 프로젝트를 좋아하는 소프트웨어 엔지니어 Zero예요.
       </p>
 
       <section className="mt-14">
@@ -100,5 +100,5 @@ const AboutPage: React.FC = () => {
 export default AboutPage
 
 export const Head: HeadFC = () => (
-  <Seo title="About" description="소프트웨어 엔지니어 Lake 소개" pathname="/about/" />
+  <Seo title="About" description="소프트웨어 엔지니어 Zero 소개" pathname="/about/" />
 )

@@ -20,7 +20,7 @@ const IndexPage: React.FC<IndexPageProps> = ({ data }) => {
     <>
       <Container className="pt-10">
         <section className="rounded-4xl bg-surface-brand-weak px-8 py-14 sm:px-14 sm:py-16">
-          <h1 className="text-display-2 font-bold text-fg-primary">Lake&apos;s Blog</h1>
+          <h1 className="text-display-2 font-bold text-fg-primary">Zero&apos;s Blog</h1>
           <p className="mt-4 max-w-xl text-body-1 text-fg-secondary">
             소프트웨어를 만들며 배우고 실패한 것들을 기록해요.
           </p>

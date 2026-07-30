@@ -6,8 +6,8 @@ const siteUrl = `https://awesomelake.net`
 
 const config: GatsbyConfig = {
   siteMetadata: {
-    title: `Lake's Blog`,
-    description: `Exploring and Reflecting: A Lake's Tech Blog`,
+    title: `Zero's Blog`,
+    description: `Exploring and Reflecting: A Zero's Tech Blog`,
     siteUrl,
     author: `Yeongsu Han (zero)`,
     lang: `ko`,
@@ -43,9 +43,9 @@ const config: GatsbyConfig = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `Lake's Blog`,
-        short_name: `Lake's Blog`,
-        description: `Exploring and Reflecting: A Lake's Tech Blog`,
+        name: `Zero's Blog`,
+        short_name: `Zero's Blog`,
+        description: `Exploring and Reflecting: A Zero's Tech Blog`,
         start_url: `/`,
         background_color: `#ffffff`,
         theme_color: `#3182f6`,
@@ -113,7 +113,7 @@ const config: GatsbyConfig = {
               }
             `,
             output: `/rss.xml`,
-            title: `Lake's Blog RSS Feed`,
+            title: `Zero's Blog RSS Feed`,
           },
         ],
       },
