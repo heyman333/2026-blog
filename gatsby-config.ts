@@ -2,7 +2,7 @@ import type { GatsbyConfig } from "gatsby"
 import remarkGfm from "remark-gfm"
 import rehypePrismPlus from "rehype-prism-plus"
 
-const siteUrl = `https://2026-zero-blog.netlify.app`
+const siteUrl = `https://awesomelake.net`
 
 const config: GatsbyConfig = {
   siteMetadata: {
