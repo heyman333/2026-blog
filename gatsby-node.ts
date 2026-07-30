@@ -50,12 +50,14 @@ export const onCreateNode: GatsbyNode["onCreateNode"] = ({ node, getNode, action
     value: tags.map(slugify),
   })
 
-  const rawBody = (node as unknown as { rawBody?: string }).rawBody ?? ``
+  // gatsby-plugin-mdx attaches the raw MDX body (frontmatter stripped) as `body`,
+  // not `rawBody` — using the wrong field silently produced 0 for every post.
+  const body = (node as unknown as { body?: string }).body ?? ``
   const CHARS_PER_MINUTE_KO = 550
   createNodeField({
     node,
     name: `timeToRead`,
-    value: Math.max(1, Math.round(rawBody.length / CHARS_PER_MINUTE_KO)),
+    value: Math.max(1, Math.round(body.length / CHARS_PER_MINUTE_KO)),
   })
 }
 
