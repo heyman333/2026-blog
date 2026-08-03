@@ -25,6 +25,13 @@ const config: GatsbyConfig = {
     `gatsby-transformer-sharp`,
     `gatsby-plugin-catch-links`,
     {
+      resolve: `gatsby-plugin-gtag`,
+      options: {
+        trackingId: `G-29WYL4MMJN`,
+        head: true,
+      },
+    },
+    {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `posts`,
