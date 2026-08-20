@@ -61,9 +61,8 @@
   --color-line-strong: var(--color-grey-400);
 
   /* ---- Typography ---- */
-  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
-    "SF Pro Text", "SF Pro", "Apple SD Gothic Neo", "Noto Sans KR", Roboto, "Helvetica Neue",
-    Arial, sans-serif;
+  --font-sans: "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+    "Malgun Gothic", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-mono: "SF Mono", "Menlo", "Consolas", "Liberation Mono", monospace;
 
   --text-display-2: clamp(1.85rem, 1.35rem + 2.2vw, 2.5rem);

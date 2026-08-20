@@ -21,7 +21,7 @@ const PostPage: React.FC<PostPageProps> = ({ data, children }) => {
 
   return (
     <article className="py-16">
-      <Container className="max-w-[760px]">
+      <Container size="narrow">
         <Breadcrumb
           items={[
             { label: `Home`, to: `/` },
