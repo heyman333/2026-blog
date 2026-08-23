@@ -39,7 +39,7 @@ const AWARDS: ReadonlyArray<{ title: string; url: string; detail: ReadonlyArray<
 
 const AboutPage: React.FC = () => {
   return (
-    <Container size="narrow" className="py-16">
+    <Container className="py-16">
       <h1 className="text-display-2 font-bold text-fg-primary">About</h1>
       <p className="mt-6 text-body-1 text-fg-secondary">
         안녕하세요, 오픈소스와 사이드 프로젝트를 좋아하는 소프트웨어 엔지니어 Zero예요.
