@@ -17,7 +17,7 @@ export function Header() {
   return (
     <header className="bg-surface-primary">
       <div className="border-b border-line-default">
-        <Container className="flex h-10 items-center justify-end gap-3 text-body-3 text-fg-tertiary">
+        <Container size="wide" className="flex h-10 items-center justify-end gap-3 text-body-3 text-fg-tertiary">
           <a href={site.social.github} className="transition-colors duration-200 hover:text-fg-brand">
             GitHub
           </a>
@@ -32,7 +32,7 @@ export function Header() {
         </Container>
       </div>
 
-      <Container className="flex h-14 items-center justify-between">
+      <Container size="wide" className="flex h-14 items-center justify-between">
         <Link
           to="/"
           className="text-title-2 font-bold text-fg-primary transition-colors duration-200 hover:text-fg-brand"

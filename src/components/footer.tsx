@@ -9,7 +9,7 @@ export function Footer() {
 
   return (
     <footer className="bg-grey-900 text-grey-300">
-      <Container className="flex flex-col gap-6 py-12 sm:flex-row sm:items-start sm:justify-between">
+      <Container size="wide" className="flex flex-col gap-6 py-12 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <p className="text-title-2 font-bold text-fg-inverse">{site.title}</p>
           <p className="mt-2 max-w-sm text-body-2 text-grey-500">{site.description}</p>
@@ -38,7 +38,7 @@ export function Footer() {
       </Container>
 
       <div className="border-t border-grey-800">
-        <Container className="py-5 text-body-3 text-grey-500">
+        <Container size="wide" className="py-5 text-body-3 text-grey-500">
           © {year} {site.author}. All rights reserved.
         </Container>
       </div>
