@@ -23,9 +23,9 @@ const PostsIndexPage: React.FC<PostsIndexPageProps> = ({ data, pageContext }) =>
   }))
 
   return (
-    <Container className="py-16">
-      <h1 className="text-display-2 font-bold text-fg-primary">Posts</h1>
-      <p className="mt-3 text-body-2 text-fg-tertiary">총 {data.postCount.totalCount}개의 글</p>
+    <Container className="py-16 min-[768px]:py-20">
+      <h1 className="text-display-xl font-bold text-ink">Posts</h1>
+      <p className="mt-4 text-body-md text-body">총 {data.postCount.totalCount}개의 글</p>
 
       <div className="mt-8">
         <PostList posts={posts} />

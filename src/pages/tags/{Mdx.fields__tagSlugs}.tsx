@@ -24,9 +24,9 @@ const TagPage: React.FC<TagPageProps> = ({ data, params }) => {
       .find((tag) => tag && slugify(tag) === slug) ?? slug
 
   return (
-    <Container className="py-16">
-      <h1 className="text-display-2 font-bold text-fg-primary">#{label}</h1>
-      <p className="mt-3 text-body-2 text-fg-tertiary">{posts.length}개의 글</p>
+    <Container className="py-16 min-[768px]:py-20">
+      <h1 className="text-display-xl font-bold text-ink">#{label}</h1>
+      <p className="mt-4 text-body-md text-body">{posts.length}개의 글</p>
       <div className="mt-8">
         <PostList posts={posts} />
       </div>

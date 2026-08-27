@@ -3,45 +3,70 @@ import { Link } from "gatsby"
 import { useSiteMetadata } from "../hooks/useSiteMetadata"
 import { Container } from "./container"
 
+/** design.md `footer` — the brand's only true black surface, flat, no hairlines. */
 export function Footer() {
   const site = useSiteMetadata()
   const year = new Date().getFullYear()
 
   return (
-    <footer className="bg-grey-900 text-grey-300">
-      <Container size="wide" className="flex flex-col gap-6 py-12 sm:flex-row sm:items-start sm:justify-between">
-        <div>
-          <p className="text-title-2 font-bold text-fg-inverse">{site.title}</p>
-          <p className="mt-2 max-w-sm text-body-2 text-grey-500">{site.description}</p>
+    <footer className="mt-16 bg-primary text-on-dark">
+      <Container className="py-16">
+        <p className="text-display-md font-bold">{site.title}</p>
+
+        <div className="mt-12 grid grid-cols-2 gap-8 min-[768px]:grid-cols-4">
+          <FooterColumn title="Blog">
+            <FooterLink to="/posts/">Posts</FooterLink>
+            <FooterLink to="/tags/">Tags</FooterLink>
+          </FooterColumn>
+
+          <FooterColumn title="About">
+            <FooterLink to="/about/">소개</FooterLink>
+            <FooterExternal href="/rss.xml">RSS</FooterExternal>
+          </FooterColumn>
+
+          <FooterColumn title="Social">
+            <FooterExternal href={site.social.github}>GitHub</FooterExternal>
+            <FooterExternal href={site.social.linkedin}>LinkedIn</FooterExternal>
+          </FooterColumn>
+
+          <div>
+            <p className="text-body-md-strong font-medium">{site.description}</p>
+          </div>
         </div>
 
-        <nav aria-label="바닥글 메뉴" className="flex flex-wrap gap-x-6 gap-y-2 text-body-2">
-          <Link to="/posts/" className="transition-colors duration-200 hover:text-fg-inverse">
-            Posts
-          </Link>
-          <Link to="/tags/" className="transition-colors duration-200 hover:text-fg-inverse">
-            Tags
-          </Link>
-          <Link to="/about/" className="transition-colors duration-200 hover:text-fg-inverse">
-            About
-          </Link>
-          <a href={site.social.github} className="transition-colors duration-200 hover:text-fg-inverse">
-            GitHub
-          </a>
-          <a href={site.social.linkedin} className="transition-colors duration-200 hover:text-fg-inverse">
-            LinkedIn
-          </a>
-          <a href="/rss.xml" className="transition-colors duration-200 hover:text-fg-inverse">
-            RSS
-          </a>
-        </nav>
-      </Container>
-
-      <div className="border-t border-grey-800">
-        <Container size="wide" className="py-5 text-body-3 text-grey-500">
+        <p className="mt-16 text-caption text-mute">
           © {year} {site.author}. All rights reserved.
-        </Container>
-      </div>
+        </p>
+      </Container>
     </footer>
+  )
+}
+
+function FooterColumn({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <p className="text-body-md-strong font-medium text-on-dark">{title}</p>
+      <ul className="mt-4 space-y-3 text-body-sm">{children}</ul>
+    </div>
+  )
+}
+
+function FooterLink({ to, children }: { to: string; children: React.ReactNode }) {
+  return (
+    <li>
+      <Link to={to} className="text-mute transition-colors duration-200 hover:text-on-dark">
+        {children}
+      </Link>
+    </li>
+  )
+}
+
+function FooterExternal({ href, children }: { href: string; children: React.ReactNode }) {
+  return (
+    <li>
+      <a href={href} className="text-mute transition-colors duration-200 hover:text-on-dark">
+        {children}
+      </a>
+    </li>
   )
 }

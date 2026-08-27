@@ -15,10 +15,10 @@ interface PostListProps {
   posts: ReadonlyArray<PostSummary>
 }
 
-/** Toss list-row — flat surface, hairline dividers, brand chip. */
+/** design.md `faq-row` — no card chrome, hairline dividers between rows. */
 export function PostList({ posts }: PostListProps) {
   return (
-    <ul>
+    <ul className="border-t border-surface-pressed">
       {posts.map((post) => (
         <PostListRow key={post.slug} post={post} />
       ))}
@@ -28,7 +28,7 @@ export function PostList({ posts }: PostListProps) {
 
 function PostListRow({ post }: { post: PostSummary }) {
   return (
-    <li className="flex flex-col gap-2.5 border-b border-line-default py-6 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+    <li className="flex flex-col gap-3 border-b border-surface-pressed py-6 sm:flex-row sm:items-center sm:justify-between sm:gap-8">
       <div className="min-w-0 flex-1">
         {post.tags[0] && (
           <div className="mb-3">
@@ -37,21 +37,16 @@ function PostListRow({ post }: { post: PostSummary }) {
         )}
         <Link
           to={`/posts/${post.slug}/`}
-          className="block truncate text-title-2 font-bold text-fg-primary transition-colors duration-200 hover:text-fg-brand"
+          className="block truncate text-display-sm font-bold text-ink transition-opacity duration-200 hover:opacity-60"
         >
           {post.title}
         </Link>
-        {post.description && (
-          <p className="mt-1.5 truncate text-body-2 text-fg-secondary">{post.description}</p>
-        )}
+        {post.description && <p className="mt-2 truncate text-body-md text-body">{post.description}</p>}
       </div>
-      <div className="flex shrink-0 items-center gap-3 text-body-3 tabular-nums text-fg-tertiary">
-        <span>{post.date}</span>
-        <span aria-hidden="true" className="text-grey-300">
-          ·
-        </span>
-        <span>{post.timeToRead}분</span>
-      </div>
+
+      <span className="shrink-0 text-body-sm tabular-nums text-body">
+        {post.date} · {post.timeToRead}분
+      </span>
     </li>
   )
 }

@@ -8,13 +8,13 @@ interface TagBadgeProps {
   className?: string
 }
 
-/** Toss chip — brand variant, used as the tag pill on list-rows. */
+/** design.md `category-button` — gray pill, body-sm-strong label. */
 export function TagBadge({ tag, className }: TagBadgeProps) {
   return (
     <Link
       to={`/tags/${slugify(tag)}/`}
       className={clsx(
-        `inline-flex shrink-0 items-center rounded-full bg-surface-brand-weak px-3 py-1 text-label-s font-bold text-fg-brand transition-colors duration-200 hover:bg-blue-500 hover:text-fg-inverse`,
+        `inline-flex shrink-0 items-center rounded-pill bg-canvas-soft px-4 py-2 text-body-sm-strong font-medium text-ink transition-colors duration-200 hover:bg-surface-pressed`,
         className
       )}
     >

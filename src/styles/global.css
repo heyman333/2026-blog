@@ -1,157 +1,124 @@
 @import "tailwindcss";
 
 /*
- * Design tokens adapted from the Toss Design System (TDS). Only the visual
- * language is reused here (cool-grey neutrals, single blue accent, aggressive
- * rounding, hairline borders, 해요체 chrome copy) — Toss's financial product
- * domain (송금/계좌 flows, super-app shell) is intentionally not carried over,
- * per the source design.md's own Don'ts.
+ * Design tokens from design.md — a black-and-white duet: pure black is the
+ * only conversion colour, white is the canvas, grayscale carries everything
+ * between. The pill (999px) is the single interactive shape; cards are 16px.
+ *
+ * The typeface is deliberately NOT the brand's (UberMove/UberMoveText are
+ * proprietary); this site keeps its existing Noto Sans KR stack, so the
+ * display/body split is carried by weight — 700 vs 400/500 — instead of by
+ * two families.
  */
 @theme {
-  /* ---- Greyscale (cool-blue tinted neutrals) ---- */
-  --color-grey-900: oklch(0.234 0.03 254);
-  --color-grey-800: oklch(0.342 0.03 253);
-  --color-grey-700: oklch(0.452 0.028 253);
-  --color-grey-600: oklch(0.555 0.022 253);
-  --color-grey-500: oklch(0.652 0.02 252);
-  --color-grey-400: oklch(0.752 0.016 251);
-  --color-grey-300: oklch(0.84 0.012 248);
-  --color-grey-200: oklch(0.913 0.008 247);
-  --color-grey-150: oklch(0.918 0.007 247);
-  --color-grey-100: oklch(0.957 0.005 247);
-  --color-grey-50: oklch(0.978 0.003 247);
+  /* ---- Ink & text ---- */
+  --color-ink: #000000;
+  --color-body: #5e5e5e;
+  --color-mute: #afafaf;
+  --color-hairline-mid: #4b4b4b;
 
-  /* ---- Brand ---- */
-  --color-blue-50: oklch(0.965 0.02 250);
-  --color-blue-500: oklch(0.624 0.176 254);
-  --color-blue-600: oklch(0.522 0.176 257);
-  --color-blue-700: oklch(0.476 0.174 259);
+  /* ---- Primary (the only conversion colour) ---- */
+  --color-primary: #000000;
+  --color-on-primary: #ffffff;
+  --color-on-dark: #ffffff;
+  --color-black-elevated: #282828;
 
-  /* ---- Semantic accents (used sparingly, never as chrome) ---- */
-  --color-red-500: oklch(0.628 0.218 22);
-  --color-green-500: oklch(0.493 0.143 154);
-  --color-navy-900: oklch(0.155 0.06 261);
+  /* ---- Surface ---- */
+  --color-canvas: #ffffff;
+  --color-canvas-soft: #efefef;
+  --color-canvas-softer: #f3f3f3;
+  --color-surface-pressed: #e2e2e2;
 
-  /* ---- Semantic alpha (navy-900 based) ---- */
-  --color-fg-tertiary: oklch(0.155 0.06 261 / 0.58);
-  --color-fg-quaternary: oklch(0.155 0.06 261 / 0.28);
-  --color-line-subtle: oklch(0 0 0 / 0.08);
-  --color-overlay-scrim: oklch(0 0 0 / 0.56);
-  --color-overlay-press: oklch(0 0 0 / 0.26);
+  /* ---- The system's only chromatic — browser-default link blue ---- */
+  --color-link: #0000ee;
 
-  /* ---- Semantic alias: foreground ---- */
-  --color-fg-primary: var(--color-grey-900);
-  --color-fg-secondary: var(--color-grey-700);
-  --color-fg-disabled: var(--color-grey-400);
-  --color-fg-inverse: oklch(1 0 0);
-  --color-fg-brand: var(--color-blue-500);
-  --color-fg-danger: var(--color-red-500);
-  --color-fg-success: var(--color-green-500);
-
-  /* ---- Semantic alias: surface ---- */
-  --color-surface-primary: oklch(1 0 0);
-  --color-surface-secondary: var(--color-grey-100);
-  --color-surface-tertiary: var(--color-grey-200);
-  --color-surface-brand: var(--color-blue-500);
-  --color-surface-brand-weak: var(--color-blue-50);
-  --color-surface-inverse: var(--color-grey-900);
-
-  /* ---- Semantic alias: line ---- */
-  --color-line-default: var(--color-grey-200);
-  --color-line-strong: var(--color-grey-400);
-
-  /* ---- Typography ---- */
+  /* ---- Typography — family unchanged from the previous system ---- */
   --font-sans: "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
     "Malgun Gothic", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-mono: "SF Mono", "Menlo", "Consolas", "Liberation Mono", monospace;
 
-  --text-display-2: clamp(1.85rem, 1.35rem + 2.2vw, 2.5rem);
-  --text-display-2--line-height: 1.2;
-  --text-display-2--letter-spacing: -0.02em;
+  /*
+   * design.md pairs each size with a px line-height. They are encoded here as
+   * the equivalent ratio so the two largest display sizes can clamp on narrow
+   * viewports without losing their tight leading (64/52 ≈ 1.23, 44/36 ≈ 1.22).
+   * Tracking is absent on purpose — the brand never letter-spaces.
+   */
+  --text-display-xxl: clamp(2rem, 1.25rem + 3.4vw, 3.25rem);
+  --text-display-xxl--line-height: 1.23;
 
-  --text-h1: clamp(1.375rem, 1.2rem + 0.8vw, 1.75rem);
-  --text-h1--line-height: 1.3;
-  --text-h1--letter-spacing: -0.02em;
+  --text-display-xl: clamp(1.75rem, 1.4rem + 1.6vw, 2.25rem);
+  --text-display-xl--line-height: 1.22;
 
-  --text-h2: 1.5rem;
-  --text-h2--line-height: 1.3;
-  --text-h2--letter-spacing: -0.02em;
+  --text-display-lg: 2rem;
+  --text-display-lg--line-height: 1.25;
 
-  --text-h3: 1.375rem;
-  --text-h3--line-height: 1.3;
-  --text-h3--letter-spacing: -0.015em;
+  --text-display-md: 1.5rem;
+  --text-display-md--line-height: 1.333;
 
-  --text-title-1: 1.125rem;
-  --text-title-1--line-height: 1.45;
-  --text-title-1--letter-spacing: -0.01em;
+  --text-display-sm: 1.25rem;
+  --text-display-sm--line-height: 1.4;
 
-  --text-title-2: 1.0625rem;
-  --text-title-2--line-height: 1.45;
-  --text-title-2--letter-spacing: -0.01em;
+  --text-body-lg: 1.125rem;
+  --text-body-lg--line-height: 1.333;
 
-  --text-body-1: 1.0625rem;
-  --text-body-1--line-height: 1.5;
-  --text-body-1--letter-spacing: -0.005em;
+  --text-body-md: 1rem;
+  --text-body-md--line-height: 1.5;
 
-  --text-body-2: 0.9375rem;
-  --text-body-2--line-height: 1.5;
-  --text-body-2--letter-spacing: -0.005em;
+  --text-body-md-strong: 1rem;
+  --text-body-md-strong--line-height: 1.25;
 
-  --text-body-3: 0.8125rem;
-  --text-body-3--line-height: 1.5;
+  --text-body-sm: 0.875rem;
+  --text-body-sm--line-height: 1.43;
 
-  --text-label-l: 1.0625rem;
-  --text-label-l--line-height: 1.25;
-  --text-label-l--letter-spacing: -0.005em;
-
-  --text-label-s: 0.8125rem;
-  --text-label-s--line-height: 1.25;
+  --text-body-sm-strong: 0.875rem;
+  --text-body-sm-strong--line-height: 1.143;
 
   --text-caption: 0.75rem;
-  --text-caption--line-height: 1.4;
+  --text-caption--line-height: 1.667;
 
-  /* ---- Radius — aggressive, 9-step ladder ---- */
-  --radius-xs: 4px;
-  --radius-s: 8px;
-  --radius-m: 12px;
-  --radius-l: 14px;
+  --text-button-large: 1.125rem;
+  --text-button-large--line-height: 1.333;
+
+  --text-button-md: 1rem;
+  --text-button-md--line-height: 1.25;
+
+  /* ---- Radius — the pill is the signature ---- */
+  --radius-none: 0px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
   --radius-xl: 16px;
-  --radius-2xl: 20px;
-  --radius-3xl: 24px;
-  --radius-4xl: 32px;
-  --radius-full: 999px;
+  --radius-pill: 999px;
+  --radius-pill-tab: 36px;
 
-  /* ---- Elevation — floating surfaces only, navy-900 based ---- */
-  --shadow-1: 0 1px 2px oklch(0.155 0.06 261 / 0.04), 0 1px 1px oklch(0.155 0.06 261 / 0.04);
-  --shadow-2: 0 4px 12px oklch(0.155 0.06 261 / 0.06), 0 1px 2px oklch(0.155 0.06 261 / 0.04);
-  --shadow-3: 0 12px 32px oklch(0.155 0.06 261 / 0.1), 0 2px 6px oklch(0.155 0.06 261 / 0.06);
-
-  --ease-toss: cubic-bezier(0.22, 0.61, 0.36, 1);
-  --ease-toss-out: cubic-bezier(0.16, 1, 0.3, 1);
+  /* ---- Elevation — Level 0 flat is the default; these are the exceptions ---- */
+  --shadow-level-1: rgb(0 0 0 / 0.12) 0px 4px 16px 0px;
+  --shadow-level-2: rgb(0 0 0 / 0.16) 0px 4px 16px 0px;
+  --shadow-level-3: rgb(0 0 0 / 0.16) 0px 2px 8px 0px;
 }
 
 @layer base {
   html {
     color-scheme: light;
+    background: var(--color-canvas);
   }
 
   body {
-    @apply bg-surface-primary text-fg-primary antialiased;
+    @apply bg-canvas text-ink antialiased;
     font-family: var(--font-sans);
-    font-size: var(--text-body-2);
-    line-height: var(--text-body-2--line-height);
-    letter-spacing: var(--text-body-2--letter-spacing);
+    font-size: var(--text-body-md);
+    line-height: var(--text-body-md--line-height);
   }
 
   ::selection {
-    background: var(--color-blue-50);
+    background: var(--color-ink);
+    color: var(--color-on-primary);
   }
 
   /* Focus is always visible, 2px solid outline + 2px offset — never outline:none */
   :focus-visible {
-    outline: 2px solid var(--color-blue-500);
+    outline: 2px solid var(--color-ink);
     outline-offset: 2px;
-    border-radius: 4px;
+    border-radius: var(--radius-md);
   }
 
   a {
@@ -162,7 +129,7 @@
 @layer components {
   /* Article body typography for rendered MDX content */
   .article-content {
-    @apply text-body-1 text-fg-primary;
+    @apply text-body-md text-ink;
   }
 
   .article-content > * + * {
@@ -170,36 +137,33 @@
   }
 
   .article-content h2 {
-    @apply text-h2 font-bold text-fg-primary;
+    @apply text-display-md font-bold text-ink;
     margin-top: 2.5em;
-    padding-bottom: 0.5em;
-    border-bottom: 1px solid var(--color-line-default);
+    padding-bottom: 0.4em;
+    border-bottom: 1px solid var(--color-surface-pressed);
   }
 
   .article-content h3 {
-    @apply text-h3 font-bold text-fg-primary;
+    @apply text-display-sm font-bold text-ink;
     margin-top: 2em;
   }
 
   .article-content h4 {
-    @apply text-title-1 font-bold text-fg-primary;
+    @apply text-body-md-strong font-bold text-ink;
     margin-top: 1.75em;
   }
 
   .article-content p {
-    @apply text-body-1 text-fg-primary;
+    @apply text-body-md text-ink;
   }
 
   .article-content a {
-    @apply text-fg-brand underline decoration-1 underline-offset-2;
-  }
-
-  .article-content a:hover {
-    color: var(--color-blue-600);
+    @apply text-ink underline underline-offset-2;
+    text-decoration-thickness: 1px;
   }
 
   .article-content strong {
-    @apply font-bold text-fg-primary;
+    @apply font-bold text-ink;
   }
 
   .article-content ul,
@@ -215,28 +179,32 @@
     list-style: decimal;
   }
 
+  .article-content li::marker {
+    color: var(--color-mute);
+  }
+
   .article-content li + li {
     margin-top: 0.4em;
   }
 
+  /* No accent colour exists in this system — the quote rule is plain ink */
   .article-content blockquote {
-    @apply text-fg-secondary;
-    background: var(--color-surface-secondary);
-    border-left: 4px solid var(--color-blue-500);
-    border-radius: 0 var(--radius-s) var(--radius-s) 0;
-    padding: 0.9em 1.1em;
+    @apply text-body;
+    background: var(--color-canvas-soft);
+    border-left: 4px solid var(--color-ink);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    padding: 1em 1.25em;
   }
 
   .article-content hr {
     border: none;
-    border-top: 1px solid var(--color-line-default);
+    border-top: 1px solid var(--color-surface-pressed);
     margin: 2.5em 0;
   }
 
   .article-content img {
     @apply w-full;
     border-radius: var(--radius-xl);
-    border: 1px solid var(--color-line-default);
   }
 
   .article-content figure {
@@ -244,7 +212,7 @@
   }
 
   .article-content figcaption {
-    @apply text-body-3 text-fg-tertiary;
+    @apply text-body-sm text-mute;
     text-align: center;
     margin-top: 0.5em;
   }
@@ -252,38 +220,39 @@
   .article-content table {
     width: 100%;
     border-collapse: collapse;
-    font-size: var(--text-body-2);
+    font-size: var(--text-body-sm);
   }
 
   .article-content th {
     text-align: left;
-    padding: 0.6em 0.75em;
-    border-bottom: 1px solid var(--color-grey-900);
-    font-weight: 700;
+    padding: 0.75em 1em;
+    background: var(--color-canvas-soft);
+    font-weight: 500;
+    color: var(--color-ink);
   }
 
   .article-content td {
-    padding: 0.6em 0.75em;
-    border-bottom: 1px solid var(--color-line-default);
+    padding: 0.75em 1em;
+    border-bottom: 1px solid var(--color-surface-pressed);
   }
 
   .article-content :not(pre) > code {
-    background: var(--color-surface-secondary);
-    color: var(--color-blue-600);
-    border-radius: var(--radius-xs);
+    background: var(--color-canvas-soft);
+    color: var(--color-ink);
+    border-radius: var(--radius-md);
     padding: 0.15em 0.4em;
     font-family: var(--font-mono);
     font-size: 0.875em;
   }
 
   .article-content pre {
-    background: var(--color-grey-900);
-    color: var(--color-grey-100);
-    border-radius: var(--radius-l);
-    padding: 1.1em 1.25em;
+    background: var(--color-ink);
+    color: #efefef;
+    border-radius: var(--radius-xl);
+    padding: 1.25em 1.5em;
     overflow-x: auto;
     font-size: 0.875em;
-    line-height: 1.6;
+    line-height: 1.571;
   }
 
   .article-content pre code {
@@ -293,51 +262,61 @@
   }
 }
 
-/* ---- Minimal Prism token theme, tuned to the Toss palette ---- */
+/*
+ * Prism theme — the one documented exception to design.md's "no second accent
+ * colour" rule. That rule governs brand chrome (CTAs, cards, bands); syntax
+ * highlighting is content, and a grayscale-only theme costs real readability on
+ * a dev blog. Hues are held desaturated so a code block still reads as a quiet
+ * black rectangle from across the page rather than as a colour accent.
+ */
 .token.comment,
 .token.prolog,
 .token.doctype,
 .token.cdata {
-  color: var(--color-grey-500);
+  color: #7c7c7c;
+  font-style: italic;
 }
 .token.punctuation {
-  color: var(--color-grey-400);
-}
-.token.property,
-.token.tag,
-.token.constant,
-.token.symbol,
-.token.deleted {
-  color: oklch(0.75 0.14 20);
-}
-.token.boolean,
-.token.number {
-  color: oklch(0.8 0.14 70);
-}
-.token.selector,
-.token.attr-name,
-.token.string,
-.token.char,
-.token.builtin,
-.token.inserted {
-  color: oklch(0.78 0.13 150);
+  color: #9aa0a6;
 }
 .token.operator,
 .token.entity,
 .token.url {
-  color: var(--color-grey-300);
+  color: #c2c7cc;
 }
+.token.keyword,
 .token.atrule,
+.token.important {
+  color: #c99cf0;
+}
+.token.string,
+.token.char,
 .token.attr-value,
-.token.keyword {
-  color: oklch(0.75 0.13 254);
+.token.inserted,
+.token.builtin {
+  color: #a8d98a;
+}
+.token.number,
+.token.boolean,
+.token.constant,
+.token.symbol {
+  color: #f0a878;
 }
 .token.function,
 .token.class-name {
-  color: oklch(0.82 0.12 86);
+  color: #86b3f5;
 }
-.token.regex,
-.token.important,
-.token.variable {
-  color: oklch(0.75 0.14 20);
+.token.tag,
+.token.selector,
+.token.deleted {
+  color: #f08a86;
+}
+.token.attr-name,
+.token.property,
+.token.variable,
+.token.regex {
+  color: #f2c66d;
+}
+.token.namespace {
+  opacity: 0.7;
 }

@@ -11,35 +11,21 @@ const NAV_ITEMS: ReadonlyArray<{ label: string; to: string; exact?: boolean }> =
   { label: `About`, to: `/about/` },
 ]
 
+/**
+ * design.md `nav-bar` — flat white, ink links at body-md-strong (500), and the
+ * right-hand cluster rendered as `button-subtle` gray pills.
+ */
 export function Header() {
   const site = useSiteMetadata()
 
   return (
-    <header className="bg-surface-primary">
-      <div className="border-b border-line-default">
-        <Container size="wide" className="flex h-10 items-center justify-end gap-3 text-body-3 text-fg-tertiary">
-          <a href={site.social.github} className="transition-colors duration-200 hover:text-fg-brand">
-            GitHub
-          </a>
-          <span aria-hidden="true" className="h-3.5 w-px bg-grey-200" />
-          <a href={site.social.linkedin} className="transition-colors duration-200 hover:text-fg-brand">
-            LinkedIn
-          </a>
-          <span aria-hidden="true" className="h-3.5 w-px bg-grey-200" />
-          <a href="/rss.xml" className="transition-colors duration-200 hover:text-fg-brand">
-            RSS
-          </a>
-        </Container>
-      </div>
-
-      <Container size="wide" className="flex h-14 items-center justify-between">
-        <Link
-          to="/"
-          className="text-title-2 font-bold text-fg-primary transition-colors duration-200 hover:text-fg-brand"
-        >
+    <header className="bg-canvas">
+      <Container className="flex flex-wrap items-center gap-x-8 gap-y-3 py-4">
+        <Link to="/" className="text-body-md-strong font-bold text-ink">
           {site.title}
         </Link>
-        <nav aria-label="주요 메뉴" className="flex h-full items-stretch gap-6">
+
+        <nav aria-label="주요 메뉴" className="flex items-center gap-6">
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.to}
@@ -48,10 +34,8 @@ export function Header() {
                 const active = item.exact ? isCurrent : isPartiallyCurrent
                 return {
                   className: clsx(
-                    `relative flex items-center text-label-l font-bold transition-colors duration-200 after:absolute after:inset-x-0 after:bottom-0 after:h-[2.5px] after:rounded-full after:transition-colors after:duration-200`,
-                    active
-                      ? `text-fg-brand after:bg-blue-500`
-                      : `text-fg-secondary after:bg-transparent hover:text-fg-brand`
+                    `text-body-md-strong font-medium transition-opacity duration-200 hover:opacity-60`,
+                    active ? `text-ink underline underline-offset-8` : `text-ink`
                   ),
                 }
               }}
@@ -60,6 +44,29 @@ export function Header() {
             </Link>
           ))}
         </nav>
+
+        {/* design.md `button-subtle` — gray pill, tertiary actions */}
+        <div className="ml-auto flex items-center gap-3">
+          <a
+            href={site.social.github}
+            className="rounded-pill bg-canvas-soft px-4 py-2.5 text-body-sm-strong font-medium text-ink transition-colors duration-200 hover:bg-surface-pressed"
+          >
+            GitHub
+          </a>
+          <a
+            href={site.social.linkedin}
+            className="hidden rounded-pill bg-canvas-soft px-4 py-2.5 text-body-sm-strong font-medium text-ink transition-colors duration-200 hover:bg-surface-pressed min-[600px]:inline-block"
+          >
+            LinkedIn
+          </a>
+          {/* design.md `button-primary` — the black pill */}
+          <a
+            href="/rss.xml"
+            className="rounded-pill bg-primary px-4 py-2.5 text-body-sm-strong font-medium text-on-primary transition-colors duration-200 hover:bg-black-elevated"
+          >
+            RSS
+          </a>
+        </div>
       </Container>
     </header>
   )

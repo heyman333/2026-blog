@@ -8,7 +8,7 @@ interface PaginationProps {
   basePath: string
 }
 
-/** Toss-flavored pagination — full-pill current page indicator. */
+/** Every control is a pill — the current page is the black `button-primary`. */
 export function Pagination({ currentPage, numPages, basePath }: PaginationProps) {
   if (numPages <= 1) return null
 
@@ -16,11 +16,8 @@ export function Pagination({ currentPage, numPages, basePath }: PaginationProps)
   const pages = Array.from({ length: numPages }, (_, i) => i + 1)
 
   return (
-    <nav aria-label="페이지네이션" className="mt-10 flex items-center justify-center gap-2">
-      <PageLink
-        href={currentPage > 1 ? pageHref(currentPage - 1) : undefined}
-        label="이전 페이지"
-      >
+    <nav aria-label="페이지네이션" className="mt-12 flex items-center justify-center gap-2">
+      <PageLink href={currentPage > 1 ? pageHref(currentPage - 1) : undefined} label="이전 페이지">
         이전
       </PageLink>
 
@@ -30,20 +27,17 @@ export function Pagination({ currentPage, numPages, basePath }: PaginationProps)
           to={pageHref(page)}
           aria-current={page === currentPage ? `page` : undefined}
           className={clsx(
-            `flex h-10 w-10 items-center justify-center rounded-full text-body-2 transition-colors duration-200`,
+            `flex h-11 w-11 items-center justify-center rounded-pill text-body-md-strong font-medium transition-colors duration-200`,
             page === currentPage
-              ? `bg-blue-500 font-bold text-fg-inverse`
-              : `text-fg-secondary hover:bg-surface-secondary`
+              ? `bg-primary text-on-primary`
+              : `text-ink hover:bg-canvas-soft`
           )}
         >
           {page}
         </Link>
       ))}
 
-      <PageLink
-        href={currentPage < numPages ? pageHref(currentPage + 1) : undefined}
-        label="다음 페이지"
-      >
+      <PageLink href={currentPage < numPages ? pageHref(currentPage + 1) : undefined} label="다음 페이지">
         다음
       </PageLink>
     </nav>
@@ -61,7 +55,7 @@ function PageLink({
 }) {
   if (!href) {
     return (
-      <span aria-hidden="true" className="px-3 text-body-2 text-fg-disabled">
+      <span aria-hidden="true" className="rounded-pill px-4 py-2.5 text-body-md-strong text-mute">
         {children}
       </span>
     )
@@ -71,7 +65,7 @@ function PageLink({
     <Link
       to={href}
       aria-label={label}
-      className="px-3 text-body-2 text-fg-secondary transition-colors duration-200 hover:text-fg-brand"
+      className="rounded-pill bg-canvas-soft px-4 py-2.5 text-body-md-strong font-medium text-ink transition-colors duration-200 hover:bg-surface-pressed"
     >
       {children}
     </Link>

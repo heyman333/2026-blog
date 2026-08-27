@@ -20,8 +20,8 @@ const PostPage: React.FC<PostPageProps> = ({ data, children }) => {
   const bannerImage = post.frontmatter?.banner?.childImageSharp?.gatsbyImageData
 
   return (
-    <article className="py-16">
-      <Container>
+    <article className="py-16 min-[768px]:py-20">
+      <Container size="prose">
         <Breadcrumb
           items={[
             { label: `Home`, to: `/` },
@@ -34,8 +34,8 @@ const PostPage: React.FC<PostPageProps> = ({ data, children }) => {
           <div className="flex flex-wrap gap-2">
             {(post.frontmatter?.tags ?? []).map((tag) => tag && <TagBadge key={tag} tag={tag} />)}
           </div>
-          <h1 className="mt-4 text-display-2 font-bold text-fg-primary">{post.frontmatter?.title}</h1>
-          <div className="mt-3 flex items-center gap-3 text-body-2 text-fg-tertiary">
+          <h1 className="mt-5 text-display-xl font-bold text-ink">{post.frontmatter?.title}</h1>
+          <div className="mt-4 flex items-center gap-3 text-body-sm text-body">
             <span>{post.frontmatter?.date}</span>
             <span aria-hidden="true">·</span>
             <span>{post.fields?.timeToRead}분 읽기</span>
@@ -47,7 +47,7 @@ const PostPage: React.FC<PostPageProps> = ({ data, children }) => {
             <GatsbyImage
               image={bannerImage}
               alt={post.frontmatter?.title ?? ``}
-              className="!rounded-2xl border border-line-default"
+              className="!rounded-xl"
             />
           </div>
         )}
@@ -56,24 +56,24 @@ const PostPage: React.FC<PostPageProps> = ({ data, children }) => {
 
         <nav
           aria-label="이전 다음 글"
-          className="mt-16 grid grid-cols-1 gap-4 border-t border-line-default pt-8 sm:grid-cols-2"
+          className="mt-16 grid grid-cols-1 gap-4 border-t border-surface-pressed pt-8 sm:grid-cols-2"
         >
           {previous && (
             <Link
               to={`/posts/${previous.fields?.slug}/`}
-              className="rounded-xl border border-line-default p-4 transition-colors duration-200 hover:border-blue-500"
+              className="rounded-xl bg-canvas-soft p-6 transition-colors duration-200 hover:bg-surface-pressed"
             >
-              <p className="text-body-3 text-fg-tertiary">이전 글</p>
-              <p className="mt-1 font-bold text-fg-primary">{previous.frontmatter?.title}</p>
+              <p className="text-body-sm text-body">이전 글</p>
+              <p className="mt-2 text-body-md-strong font-medium text-ink">{previous.frontmatter?.title}</p>
             </Link>
           )}
           {next && (
             <Link
               to={`/posts/${next.fields?.slug}/`}
-              className="rounded-xl border border-line-default p-4 text-right transition-colors duration-200 hover:border-blue-500 sm:col-start-2"
+              className="rounded-xl bg-canvas-soft p-6 text-right transition-colors duration-200 hover:bg-surface-pressed sm:col-start-2"
             >
-              <p className="text-body-3 text-fg-tertiary">다음 글</p>
-              <p className="mt-1 font-bold text-fg-primary">{next.frontmatter?.title}</p>
+              <p className="text-body-sm text-body">다음 글</p>
+              <p className="mt-2 text-body-md-strong font-medium text-ink">{next.frontmatter?.title}</p>
             </Link>
           )}
         </nav>

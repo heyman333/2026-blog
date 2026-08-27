@@ -55,7 +55,7 @@ const config: GatsbyConfig = {
         description: `Exploring and Reflecting: A Zero's Tech Blog`,
         start_url: `/`,
         background_color: `#ffffff`,
-        theme_color: `#3182f6`,
+        theme_color: `#000000`,
         display: `standalone`,
         icon: `src/images/icon.png`,
       },
