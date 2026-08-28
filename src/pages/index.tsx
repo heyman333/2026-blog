@@ -2,7 +2,6 @@ import * as React from "react"
 import { graphql, Link, type HeadFC, type PageProps } from "gatsby"
 import { Container } from "../components/container"
 import { PostList, type PostSummary } from "../components/post-list"
-import { PromoCard } from "../components/promo-card"
 import { Seo } from "../components/seo"
 
 type IndexPageProps = PageProps<Queries.IndexPageQuery>
@@ -16,9 +15,6 @@ const IndexPage: React.FC<IndexPageProps> = ({ data }) => {
     timeToRead: node.fields?.timeToRead ?? 1,
     description: node.frontmatter?.description ?? node.excerpt,
   }))
-
-  const featured = posts.slice(0, 4)
-  const rest = posts.slice(4)
 
   return (
     <>
@@ -44,18 +40,7 @@ const IndexPage: React.FC<IndexPageProps> = ({ data }) => {
         </div>
       </Container>
 
-      {/* Alternating white → black promo rhythm; the polarity flip is the depth cue */}
-      {featured.length > 0 && (
-        <Container className="pb-16">
-          <div className="grid grid-cols-1 gap-6 min-[768px]:grid-cols-2">
-            {featured.map((post, index) => (
-              <PromoCard key={post.slug} post={post} dark={index % 2 === 1} />
-            ))}
-          </div>
-        </Container>
-      )}
-
-      {rest.length > 0 && (
+      {posts.length > 0 && (
         <Container className="pb-8">
           <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
             <h2 className="text-display-xl font-bold text-ink">최근 글</h2>
@@ -66,7 +51,7 @@ const IndexPage: React.FC<IndexPageProps> = ({ data }) => {
               전체 보기
             </Link>
           </div>
-          <PostList posts={rest} />
+          <PostList posts={posts} />
         </Container>
       )}
     </>
