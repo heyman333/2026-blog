@@ -52,16 +52,17 @@ const AboutPage: React.FC = () => {
   return (
     <Container className="py-16 min-[768px]:py-20">
       <h1 className="text-display-xl font-bold text-ink">About</h1>
-      <p className="mt-6 max-w-2xl text-body-lg font-medium text-body">
-        안녕하세요, 오픈소스와 사이드 프로젝트를 좋아하는 소프트웨어 엔지니어 Zero예요.
+      <p className="mt-6 max-w-2xl text-body-lg font-bold text-ink">안녕하세요, 소프트웨어 엔지니어 Zero입니다.</p>
+      <p className="mt-4 max-w-2xl text-body-md text-body">
+        오픈소스와 사이드 프로젝트를 좋아하고, 직접 만들고 부딪혀보는 걸 좋아합니다.
       </p>
       <p className="mt-4 max-w-2xl text-body-md text-body">
-        코드를 짜는 사람에서 한 걸음 더 나아가, AI 시대에 어울리는 프로덕트 빌더가 되기 위해 노력하고 있어요. 문제를
-        정의하는 것부터 만들고 내보내는 것까지, 그 전 과정을 스스로 감당할 수 있는 사람이 되고 싶어요.
+        요즘은 AI를 활용해 아이디어를 빠르게 제품으로 만드는 일에 관심이 많습니다.
+        <br />
+        문제를 발견하고, 만들고, 실제 사용자에게 내보내는 과정까지 직접 해보려고 합니다.
       </p>
       <p className="mt-4 max-w-2xl text-body-md text-body">
-        그리고 스스로를 &lsquo;극단적 이기주의&rsquo;를 실천하는 개발자라고 소개해요. 내가 가장 재밌고 몰입할 수 있는
-        일을 먼저 고르는 편인데, 신기하게도 그렇게 만든 결과물이 결국 다른 사람에게도 가장 쓸모 있더라고요.
+        재밌어서 시작한 일이 결국 누군가에게 도움이 될 때 가장 큰 재미를 느낍니다.
       </p>
 
       <section className="mt-16">
