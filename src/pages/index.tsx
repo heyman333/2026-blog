@@ -26,7 +26,7 @@ const IndexPage: React.FC<IndexPageProps> = ({ data }) => {
       <Container className="py-16 min-[768px]:py-20">
         <h1 className="max-w-3xl text-display-xxl font-bold text-ink">Zero&apos;s Blog</h1>
         <p className="mt-6 max-w-xl text-body-lg font-medium text-body">
-          소프트웨어를 만들며 배우고 실패한 것들을 기록해요.
+          소프트웨어를 만들며 배우고 인생을 살면서 느끼는 것들을 기록해요.
         </p>
         <div className="mt-8 flex flex-wrap items-center gap-3">
           <Link

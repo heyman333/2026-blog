@@ -7,7 +7,7 @@ const siteUrl = `https://awesomelake.net`
 const config: GatsbyConfig = {
   siteMetadata: {
     title: `Zero's Blog`,
-    description: `Exploring and Reflecting: A Zero's Tech Blog`,
+    description: `소프트웨어를 만들며 배우고 인생을 살면서 느끼는 것들을 기록해요.`,
     siteUrl,
     author: `Yeongsu Han (zero)`,
     lang: `ko`,
@@ -52,7 +52,7 @@ const config: GatsbyConfig = {
       options: {
         name: `Zero's Blog`,
         short_name: `Zero's Blog`,
-        description: `Exploring and Reflecting: A Zero's Tech Blog`,
+        description: `소프트웨어를 만들며 배우고 인생을 살면서 느끼는 것들을 기록해요.`,
         start_url: `/`,
         background_color: `#ffffff`,
         theme_color: `#000000`,
