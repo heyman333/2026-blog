@@ -137,5 +137,9 @@ const AboutPage: React.FC = () => {
 export default AboutPage
 
 export const Head: HeadFC = () => (
-  <Seo title="About" description="소프트웨어 엔지니어 Zero 소개" pathname="/about/" />
+  <Seo
+    title="About"
+    description="오픈소스와 사이드 프로젝트를 좋아하고, AI로 아이디어를 빠르게 제품으로 만드는 소프트웨어 엔지니어 Zero를 소개해요."
+    pathname="/about/"
+  />
 )
