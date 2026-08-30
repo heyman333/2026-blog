@@ -5,6 +5,7 @@ import { Container } from "../../components/container"
 import { Breadcrumb } from "../../components/breadcrumb"
 import { TagBadge } from "../../components/tag-badge"
 import { Seo } from "../../components/seo"
+import { AdSlot } from "../../components/ad-slot"
 
 type PostPageProps = PageProps<Queries.PostQuery> & { children: React.ReactNode }
 
@@ -53,6 +54,8 @@ const PostPage: React.FC<PostPageProps> = ({ data, children }) => {
         )}
 
         <div className="article-content mt-10">{children}</div>
+
+        <AdSlot slot="postBottom" className="mt-12" />
 
         <nav
           aria-label="이전 다음 글"
