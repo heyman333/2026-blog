@@ -34,10 +34,14 @@ interface OpenSourceProject {
 }
 
 const OPEN_SOURCE: ReadonlyArray<OpenSourceProject> = [
-  { name: `react-native-kakao-login`, url: `https://github.com/crossplatformkorea/react-native-kakao-login`, stars: 370 },
-  { name: `react-native-responsive-fontSize`, url: `https://github.com/heyman333/react-native-responsive-fontSize`, stars: 667 },
-  { name: `react-animated-numbers`, url: `https://github.com/heyman333/react-animated-numbers`, stars: 276 },
-  { name: `react-native-animated-numbers`, url: `https://github.com/heyman333/react-native-animated-numbers`, stars: 419 },
+  { name: `react-native-responsive-fontSize`, url: `https://github.com/heyman333/react-native-responsive-fontSize`, stars: 740 },
+  { name: `react-native-animated-numbers`, url: `https://github.com/heyman333/react-native-animated-numbers`, stars: 471 },
+  { name: `react-native-kakao-login`, url: `https://github.com/crossplatformkorea/react-native-kakao-login`, stars: 405 },
+  { name: `react-animated-numbers`, url: `https://github.com/heyman333/react-animated-numbers`, stars: 303 },
+  { name: `atelier-ui`, url: `https://github.com/heyman333/atelier-ui`, stars: 30 },
+  { name: `tanstack-query-llms-txt`, url: `https://github.com/heyman333/tanstack-query-llms-txt`, stars: 8 },
+  { name: `fitting-app`, url: `https://github.com/heyman333/fitting-app`, stars: 7 },
+  { name: `agent-notion-template-docs`, url: `https://github.com/heyman333/agent-notion-template-docs`, stars: 0 },
 ]
 
 const AWARDS: ReadonlyArray<{ title: string; url: string; detail: ReadonlyArray<string> }> = [
