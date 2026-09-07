@@ -6,6 +6,7 @@ import { Breadcrumb } from "../../components/breadcrumb"
 import { TagBadge } from "../../components/tag-badge"
 import { Seo } from "../../components/seo"
 import { AdSlot } from "../../components/ad-slot"
+import { Comments } from "../../components/comments"
 
 type PostPageProps = PageProps<Queries.PostQuery> & { children: React.ReactNode }
 
@@ -80,6 +81,8 @@ const PostPage: React.FC<PostPageProps> = ({ data, children }) => {
             </Link>
           )}
         </nav>
+
+        <Comments key={post.id} />
       </Container>
     </article>
   )
