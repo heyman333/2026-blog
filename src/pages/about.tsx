@@ -25,6 +25,7 @@ interface SideProject {
 
 const SIDE_PROJECTS: ReadonlyArray<SideProject> = [
   { name: `Bonjour`, url: `https://about.bonjour.ai.kr/`, description: `소개팅 주선 서비스` },
+  { name: `AI 뉴스 데일리`, url: `https://ailetter.ai.kr/`, description: `AI 타임라인 큐레이션 뉴스레터` },
 ]
 
 interface OpenSourceProject {
