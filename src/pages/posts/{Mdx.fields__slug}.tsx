@@ -7,6 +7,7 @@ import { TagBadge } from "../../components/tag-badge"
 import { Seo } from "../../components/seo"
 import { AdSlot } from "../../components/ad-slot"
 import { Comments } from "../../components/comments"
+import { PullToBack } from "../../components/pull-to-back"
 
 type PostPageProps = PageProps<Queries.PostQuery> & { children: React.ReactNode }
 
@@ -83,6 +84,7 @@ const PostPage: React.FC<PostPageProps> = ({ data, children }) => {
         </nav>
 
         <Comments key={post.id} />
+        <PullToBack />
       </Container>
     </article>
   )
