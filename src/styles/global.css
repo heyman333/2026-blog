@@ -320,3 +320,41 @@
 .token.namespace {
   opacity: 0.7;
 }
+
+/*
+ * The hero's pixel-art avatar — one 1276x460 sheet of four 319x460 frames,
+ * stepped in CSS so the loop costs no JavaScript and no layout shift. If the
+ * sheet is ever regenerated at another size, these two numbers are the only
+ * thing to change.
+ */
+.dev-sprite {
+  --dev-sprite-scale: 0.38;
+  --dev-sprite-sheet: 1276px;
+  --dev-sprite-cell: 319px;
+
+  width: calc(var(--dev-sprite-cell) * var(--dev-sprite-scale));
+  height: calc(460px * var(--dev-sprite-scale));
+  background: url("/images/dev-sprite.png") 0 0 no-repeat;
+  background-size: calc(var(--dev-sprite-sheet) * var(--dev-sprite-scale)) auto;
+  image-rendering: pixelated;
+  animation: dev-sprite-type 0.72s steps(4) infinite;
+}
+
+@media (min-width: 768px) {
+  .dev-sprite {
+    --dev-sprite-scale: 0.52;
+  }
+}
+
+@keyframes dev-sprite-type {
+  to {
+    background-position-x: calc(var(--dev-sprite-sheet) * var(--dev-sprite-scale) * -1);
+  }
+}
+
+/* The loop is decoration; motion-sensitive readers get frame one, held. */
+@media (prefers-reduced-motion: reduce) {
+  .dev-sprite {
+    animation: none;
+  }
+}

@@ -1,6 +1,7 @@
 import * as React from "react"
 import { graphql, Link, type HeadFC, type PageProps } from "gatsby"
 import { Container } from "../components/container"
+import { DevSprite } from "../components/dev-sprite"
 import { PostList, type PostSummary } from "../components/post-list"
 import { Seo } from "../components/seo"
 
@@ -18,25 +19,35 @@ const IndexPage: React.FC<IndexPageProps> = ({ data }) => {
 
   return (
     <>
-      {/* design.md `hero-band-light` — display-xxl headline + black pill CTA */}
+      {/*
+        design.md `hero-band-light` — display-xxl headline + black pill CTA on
+        the left, the visual on the right. The headline keeps source order so it
+        stays the first thing read; on mobile the two stack and the avatar sits
+        under the CTAs rather than pushing them below the fold.
+      */}
       <Container className="py-16 min-[768px]:py-20">
-        <h1 className="max-w-3xl text-display-xxl font-bold text-ink">Zero&apos;s Blog</h1>
-        <p className="mt-6 max-w-xl text-body-lg font-medium text-body">
-          소프트웨어를 만들며 배우고 인생을 살면서 느끼는 것들을 기록해요.
-        </p>
-        <div className="mt-8 flex flex-wrap items-center gap-3">
-          <Link
-            to="/posts/"
-            className="rounded-pill bg-primary px-6 py-3 text-button-md font-medium text-on-primary transition-colors duration-200 hover:bg-black-elevated"
-          >
-            글 둘러보기
-          </Link>
-          <Link
-            to="/about/"
-            className="rounded-pill bg-canvas-soft px-6 py-3 text-button-md font-medium text-ink transition-colors duration-200 hover:bg-surface-pressed"
-          >
-            소개 보기
-          </Link>
+        <div className="flex flex-col gap-10 min-[768px]:flex-row min-[768px]:items-center min-[768px]:justify-between min-[768px]:gap-12">
+          <div className="min-[768px]:flex-1">
+            <h1 className="max-w-3xl text-display-xxl font-bold text-ink">Zero&apos;s Blog</h1>
+            <p className="mt-6 max-w-xl text-body-lg font-medium text-body">
+              소프트웨어를 만들며 배우고 인생을 살면서 느끼는 것들을 기록해요.
+            </p>
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <Link
+                to="/posts/"
+                className="rounded-pill bg-primary px-6 py-3 text-button-md font-medium text-on-primary transition-colors duration-200 hover:bg-black-elevated"
+              >
+                글 둘러보기
+              </Link>
+              <Link
+                to="/about/"
+                className="rounded-pill bg-canvas-soft px-6 py-3 text-button-md font-medium text-ink transition-colors duration-200 hover:bg-surface-pressed"
+              >
+                소개 보기
+              </Link>
+            </div>
+          </div>
+          <DevSprite className="shrink-0 self-center min-[768px]:self-auto" />
         </div>
       </Container>
 
