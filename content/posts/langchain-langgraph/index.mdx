@@ -14,13 +14,13 @@ LangChain, 그리고 LangGraph.
 - LangGraph가 LangChain 다음 버전이에요?
 - 그냥 OpenAI API를 쓰면 안 되나요?
 
-유난히 어려워 보이는 기술 이름들, 이름은 둘째 치고, 두 도구가 서로 어떻게 맞물리는지가 잘 그려지지 않았다.
+유난히 어려워 보이는 기술 이름들, 이름은 둘째 치고, 두 도구가 서로 어떻게 맞물리는지도 잘 그려지지 않는다.
 
-이 글에서는 에이전트 개념부터 LangChain과 LangGraph가 각각 어떤 문제를 푸는지, 실제 개발에서 언제 꺼내 쓰면 좋은지 정리해본다.
+이 글에서는 에이전트 개념부터 LangChain과 LangGraph가 각각 어떤 문제를 푸는지, 실제 개발에서 언제 쓰면 좋은지 정리해본다.
 
 ## 에이전트
 
-LangChain과 LangGraph를 이해하려면 에이전트(Agent)라는 개념부터 잡고 가야 한다.
+LangChain과 LangGraph를 이해하려면 에이전트(Agent)라는 개념부터 알아야 한다.
 
 지금 나오고 있는 OpenAI와 Anthropic의 새로운 모델(LLM)은 똑똑하지만 혼자서는 크게 할 수 있는 일이 없다. 질문에 답은 해도, 지금 날씨를 조회하거나 이메일을 보내려면 따로 기능을 붙여야 한다.
 
@@ -86,7 +86,7 @@ LangChain은 이런 작업에 필요한 구성 요소를 제공한다.
 
 ### LangChain 1.0부터 달라진 방향
 
-LangChain은 2025년 10월 [1.0을 출시](https://www.langchain.com/blog/langchain-langgraph-1dot0)하면서 에이전트를 쉽게 만드는 쪽으로 방향을 확실히 잡았다. 그 중심에 `create_agent` 함수가 있다.
+LangChain은 2025년 10월 [1.0을 출시](https://www.langchain.com/blog/langchain-langgraph-1dot0)하면서 에이전트를 쉽게 만드는 쪽으로 방향을 확실히 잡았다. 대표적으로 `create_agent` 함수가 있다.
 
 날씨 조회 에이전트를 만든다고 해보자.
 
@@ -146,11 +146,58 @@ LangChain 1.0에서 하나 더 알아두면 좋은 기능이 미들웨어(Middle
 - 모델에 전달하기 전에 개인정보를 가린다.
 - 도구 호출 전후에 로그를 기록한다.
 
-미들웨어로 이런 기능을 에이전트 실행 과정에 연결 할 수 있다.
+미들웨어로 이런 기능을 에이전트 실행 과정에 연결 할 수 있다. 위 네 가지를 코드로 옮기면 이렇다.
+
+```python
+from langchain.agents import create_agent
+from langchain.agents.middleware import (
+    HumanInTheLoopMiddleware,
+    PIIMiddleware,
+    SummarizationMiddleware,
+    wrap_tool_call,
+)
+from langgraph.checkpoint.memory import InMemorySaver
+
+
+def send_email(to: str, body: str) -> str:
+    """이메일을 보낸다."""
+    return f"{to}에게 메일을 보냈어요."
+
+
+# 도구 호출 전후에 로그를 남기는 미들웨어
+@wrap_tool_call
+def log_tool_call(request, handler):
+    print(f"[도구 시작] {request.tool_call['name']}")
+    result = handler(request)
+    print(f"[도구 끝] {request.tool_call['name']}")
+    return result
+
+
+agent = create_agent(
+    model="anthropic:claude-sonnet-4-6",
+    tools=[send_email],
+    middleware=[
+        # 모델에 전달하기 전에 카드 번호를 가린다
+        PIIMiddleware("credit_card", strategy="mask"),
+        # 대화가 4,000토큰을 넘으면 이전 메시지를 요약한다
+        SummarizationMiddleware(
+            model="anthropic:claude-sonnet-4-6",
+            trigger=("tokens", 4000),
+        ),
+        # send_email을 실행하기 전에 사람의 승인을 기다린다
+        HumanInTheLoopMiddleware(interrupt_on={"send_email": True}),
+        log_tool_call,
+    ],
+    # 승인을 기다리는 동안 대화 상태를 저장해 둘 곳
+    checkpointer=InMemorySaver(),
+)
+```
+
+에이전트 본체는 그대로 두고 `middleware` 목록에 필요한 것만 끼워 넣는다. 모델이 `send_email`을 부르려고 하면 실행이 멈추고, 사람이 승인하면 그 자리부터 다시 이어서 돈다. 이렇게 멈췄다 이어가려면 상태를 어딘가 저장해 둬야 해서 `checkpointer`를 함께 넘기는데, 이게 LangGraph에서 가져온 부품이다.
 
 그럼 LangChain만으로 모든 에이전트를 만들 수 있을까?
 
-실행 흐름이 복잡해지면서 더 나은 구조가 필요해졌다.
+실행 흐름이 복잡해지면서 더 나은 구조가 필요해졌는데, 그래서 생긴 게 바로 LangGraph다.
 
 ## LangGraph, 실행 흐름을 직접 제어하기
 
@@ -378,8 +425,6 @@ Anthropic의 [「Building effective agents」](https://www.anthropic.com/researc
 이 비판들이 문제 삼는 건 비용이다. 프레임워크는 개발을 편하게 하려고 쓰는 도구인데, 이해하고 쓰는 비용이 직접 짜는 비용보다 커지면 들일 이유가 줄어든다.
 
 물론 1.0 이후로 API와 에이전트 구성 방식이 정리되면서 달라진 부분이 많으니, 예전 경험만으로 지금 버전을 평가하는 건 조심해야 한다. 최신 버전이 모든 문제를 해결한 것도 아니다. 실제로 들일 때는 디버깅 편의성과 운영 환경에서의 안정성을 같이 따져보는 게 좋다.
-
-에이전트를 만들기로 결심했다면 단계적으로 천천히 구현해보자
 
 **LLM API를 직접 호출하는 것부터 시작하자.**
 
