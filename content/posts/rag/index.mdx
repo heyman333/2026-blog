@@ -1,10 +1,14 @@
 ---
 title: RAG는 도대체 뭘까
 date: 2026-10-19
+banner: ./banner.png
 tags:
   - AI
 description: "문서가 컨텍스트에 다 들어가지 않을 때, 필요한 조각만 찾아서 넣는 방법. RAG가 어떻게 동작하는지, 그리고 요즘 많이 들리는 GraphRAG는 뭐가 다른지 정리합니다."
 ---
+
+import { BlurImage } from "../../../src/components/blur-image"
+import graphImg from "./graph.png"
 
 [지난 글](/posts/llm-context/)에서 상담 챗봇의 컨텍스트에 환불 규정을 넣었다. 규정 문서가 한 장일 때 얘기다.
 
@@ -255,6 +259,10 @@ Anthropic은 [Contextual Retrieval](https://www.anthropic.com/news/contextual-re
 GraphRAG는 이 문제를 풀려고 나온 방법이다. Microsoft Research가 2024년 [「From Local to Global」](https://arxiv.org/abs/2404.16130) 논문으로 발표하고 [오픈소스](https://microsoft.github.io/graphrag/)로 공개했다.
 
 일반 RAG가 문서를 잘라서 그대로 쌓아 둔다면, GraphRAG는 문서를 읽고 그 안의 관계를 뽑아 지도를 만든다.
+
+<BlurImage src={graphImg} alt="옅은 점과 선으로 이어진 무리들 사이로, 붉은 낙관에서 시작한 진한 선 하나가 여러 무리를 건너가는 그림" width={720} />
+
+*「무제 (지도)」. 옅은 점과 선의 무리는 문서에서 뽑아낸 대상과 관계, 붉은 낙관은 질문의 출발점이다. 진한 선은 그 출발점에서 연결을 따라 여러 무리를 건너가는 길이다.*
 
 **1. 관계 뽑기.** LLM이 청크를 하나씩 읽으며 등장하는 대상(엔티티)과 그 사이의 관계를 뽑는다.
 
