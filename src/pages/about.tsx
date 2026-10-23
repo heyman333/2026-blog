@@ -26,6 +26,11 @@ interface SideProject {
 const SIDE_PROJECTS: ReadonlyArray<SideProject> = [
   { name: `Bonjour`, url: `https://about.bonjour.ai.kr/`, description: `소개팅 주선 서비스` },
   { name: `AI 뉴스 데일리`, url: `https://ailetter.ai.kr/`, description: `AI 타임라인 큐레이션 뉴스레터` },
+  {
+    name: `NJC - 느좋카 지도`,
+    url: `https://apps.apple.com/us/app/njc-%EB%8A%90%EC%A2%8B%EC%B9%B4-%EC%A7%80%EB%8F%84/id6824793038`,
+    description: `느낌 좋은 카페를 모아 보는 지도 앱`,
+  },
 ]
 
 interface OpenSourceProject {
