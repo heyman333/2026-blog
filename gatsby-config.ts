@@ -42,7 +42,8 @@ const config: GatsbyConfig = {
       resolve: `gatsby-plugin-mdx`,
       options: {
         mdxOptions: {
-          remarkPlugins: [remarkGfm],
+          // singleTilde: false — 한글 범위 표기(5~15분)가 취소선이 되지 않게. ~~취소선~~은 그대로 동작
+          remarkPlugins: [[remarkGfm, { singleTilde: false }]],
           rehypePlugins: [[rehypePrismPlus, { ignoreMissing: true, showLineNumbers: false }]],
         },
       },
